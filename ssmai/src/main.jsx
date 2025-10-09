@@ -6,12 +6,15 @@ import "./index.css";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 
+// import ItemDetalhes from "./pages/ItemDetalhes";
+
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Login />,
   },
+
   {
     path: "/home",
     element: <Home />,

@@ -25,7 +25,7 @@ const Navbar = () => {
       {/* Botão do menu*/}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed top-4 left-4 z-50 text-blue-600 bg-white rounded-md p-2 shadow-md md:hidden"
+        className="fixed top-4 left-4 z-50 text-blue-600 bg-white rounded-md p-2 shadow-md lg:hidden"
       >
         {isOpen ? <X size={28} /> : <Menu size={28} />}
       </button>
