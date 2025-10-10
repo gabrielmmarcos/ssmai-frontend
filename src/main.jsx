@@ -5,8 +5,9 @@ import "./index.css";
 
 import Home from "./pages/Home";
 import Login from "./pages/Login";
+import ItensDetalhes from "./pages/ItensDetalhes";
 
-// import ItemDetalhes from "./pages/ItemDetalhes";
+
 
 
 const router = createBrowserRouter([
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
     element: <Home />,
   },
 
+  {
+    path: "/itensdetalhes",
+    element: <ItensDetalhes />,
+  },
 
 
 ]);

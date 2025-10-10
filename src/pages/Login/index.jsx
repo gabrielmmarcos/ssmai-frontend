@@ -11,7 +11,7 @@ function Login() {
           <input
             type="email"
             placeholder="Email"
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
@@ -19,13 +19,13 @@ function Login() {
           <input
             type="password"
             placeholder="Senha"
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
 
 
-        <a href="/home" className="bg-blue-500 text-white text-center  font-semibold py-2 rounded-md hover:bg-red-700 transition">
+        <a href="/home" className="bg-blue-500 text-white text-center  font-semibold py-2 rounded-md transition">
           <button className="" >
             Entrar
           </button>
