@@ -25,28 +25,28 @@ function ItensDetalhes() {
                                 <div className="mb-4">
                                     <input
                                         type="Nome"
-                                        placeholder="Nome"
+                                        placeholder="Item 1"
                                         className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     />
                                 </div>
                                 <div className="mb-4">
                                     <input
                                         type="Quantidade"
-                                        placeholder="Quantidade"
+                                        placeholder="200 Unidades"
                                         className="w-full px-4  py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     />
                                 </div>
                                 <div className="mb-4">
                                     <input
                                         type="Categoria"
-                                        placeholder="Categoria"
+                                        placeholder="Higiene"
                                         className="w-full px-4  py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     />
                                 </div>
                                 <div className="mb-4">
                                     <input
                                         type="Marca"
-                                        placeholder="Marca"
+                                        placeholder="Jhonsons"
                                         className="w-full px-4  py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     />
                                 </div>

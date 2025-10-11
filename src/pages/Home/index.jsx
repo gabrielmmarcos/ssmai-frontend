@@ -66,7 +66,7 @@ function Home() {
         {/* Container principal */}
         <div className="flex flex-col flex-1 py-28 px-10 lg:py-10 min-h-screen bg-gray-50 overflow-x-hidden ml-0 lg:ml-52">
           {/* Título */}
-          <h1 className="text-2xl lg:text-5xl font-bold text-gray-800 mb-8">
+          <h1 className="text-2xl lg:text-5xl text-center lg:text-left font-bold text-gray-800 mb-8">
             Bem-vindo, <span className="text-blue-600">Canalha</span>
           </h1>
 

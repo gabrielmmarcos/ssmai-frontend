@@ -6,6 +6,7 @@ import "./index.css";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import ItensDetalhes from "./pages/ItensDetalhes";
+import Profile from "./pages/Profile"
 
 
 
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
   {
     path: "/itensdetalhes",
     element: <ItensDetalhes />,
+  },
+  {
+    path: "/profile",
+    element: <Profile />,
   },
 
 
