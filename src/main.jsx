@@ -7,6 +7,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import ItensDetalhes from "./pages/ItensDetalhes";
 import Profile from "./pages/Profile"
+import Dashboards from "./pages/Dashboard";
 
 
 
@@ -30,7 +31,10 @@ const router = createBrowserRouter([
     path: "/profile",
     element: <Profile />,
   },
-
+  {
+    path: "/dashboard",
+    element: <Dashboards />,
+  },
 
 ]);
 
