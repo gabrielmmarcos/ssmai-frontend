@@ -66,7 +66,7 @@ const Dashboard = () => {
                         <h2 className="text-lg font-semibold text-gray-800">Estatísticas de Itens</h2>
                         <p className="text-gray-500 text-sm">Janeiro - Novembro 2025</p>
                     </div>
-                    <a href="/estatisticas">
+                    <a href="/dashboard">
                         <p className="text-blue-500 font-bold hover:underline cursor-pointer">
                             Ver Todas Estatísticas
                         </p>

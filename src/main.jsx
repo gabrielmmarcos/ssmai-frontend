@@ -8,8 +8,8 @@ import Login from "./pages/Login";
 import ItensDetalhes from "./pages/ItensDetalhes";
 import Profile from "./pages/Profile"
 import Dashboards from "./pages/Dashboard";
-
-
+import Chatbot from "./pages/Chatbot";
+import Produtos from "./pages/Produtos"
 
 
 const router = createBrowserRouter([
@@ -34,6 +34,14 @@ const router = createBrowserRouter([
   {
     path: "/dashboard",
     element: <Dashboards />,
+  },
+  {
+    path: "/chatbot",
+    element: <Chatbot />,
+  },
+  {
+    path: "/produtos",
+    element: <Produtos />,
   },
 
 ]);
