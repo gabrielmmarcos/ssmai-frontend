@@ -1,5 +1,5 @@
 import React from "react";
-import { Camera } from "lucide-react";
+import { Camera, } from "lucide-react";
 
 const ItemCard = () => {
     return (
@@ -8,10 +8,11 @@ const ItemCard = () => {
                 <Camera />
             </div>
             <div className="w-full h-1/2 p-4">
+
                 <h4 className="font-semibold w-full">Item 1</h4>
                 <p>200 Unidades</p>
 
-                <a href="/ItensDetalhes">
+                <a href="/veritem">
                     <button
                         className="border-2 border-blue-500 text-blue-500 w-full  bg-white px-4 py-1 mt-3 rounded-lg hover:bg-blue-500 hover:text-white transition cursor-pointer"
                     >

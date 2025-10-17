@@ -5,11 +5,16 @@ import "./index.css";
 
 import Home from "./pages/Home";
 import Login from "./pages/Login";
-import ItensDetalhes from "./pages/ItensDetalhes";
 import Profile from "./pages/Profile"
 import Dashboards from "./pages/Dashboard";
 import Chatbot from "./pages/Chatbot";
+
 import Produtos from "./pages/Produtos"
+
+{/* crud produtos */ }
+import AddItem from "./pages/AddItem";
+import ItensDetalhes from "./pages/VerItem";
+import EditarItem from "./pages/EditarItem";
 
 
 const router = createBrowserRouter([
@@ -17,15 +22,9 @@ const router = createBrowserRouter([
     path: "/",
     element: <Login />,
   },
-
   {
     path: "/home",
     element: <Home />,
-  },
-
-  {
-    path: "/itensdetalhes",
-    element: <ItensDetalhes />,
   },
   {
     path: "/profile",
@@ -42,6 +41,20 @@ const router = createBrowserRouter([
   {
     path: "/produtos",
     element: <Produtos />,
+  },
+
+  /* crud produto */
+  {
+    path: "/additem",
+    element: <AddItem />,
+  },
+  {
+    path: "/editaritem",
+    element: <EditarItem />,
+  },
+  {
+    path: "/veritem",
+    element: <ItensDetalhes />,
   },
 
 ]);

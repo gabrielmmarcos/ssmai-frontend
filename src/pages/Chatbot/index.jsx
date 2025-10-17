@@ -29,9 +29,11 @@ function Chatbot() {
     };
 
     return (
-        <div className="flex w-full bg-white">
-
-            <Navbar />
+        <div className="flex w-full bg-white relative z-0">
+            {/* Navbar com z-index alto */}
+            <div className="z-50">
+                <Navbar />
+            </div>
 
             {/* Container principal */}
             <div className="flex flex-col flex-1 py-28 px-4 lg:py-10 min-h-screen bg-white overflow-hidden lg:ml-52 relative">

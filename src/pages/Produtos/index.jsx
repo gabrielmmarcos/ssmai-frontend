@@ -1,5 +1,6 @@
 import Navbar from "../../components/navbar";
 import { useNavigate } from "react-router-dom";
+import { Plus } from "lucide-react"
 
 function Produtos() {
     const navigate = useNavigate();
@@ -118,7 +119,7 @@ function Produtos() {
                                     <tr
                                         key={item.id}
                                         className="border border-blue-200 hover:bg-blue-50 transition cursor-pointer"
-                                        onClick={() => navigate(`/produto/${item.id}`)}
+                                        onClick={() => navigate(`/veritem`)}
                                     >
                                         <td className="py-3 px-4 font-medium border border-blue-100">
                                             {item.titulo}
@@ -140,6 +141,15 @@ function Produtos() {
                             </tbody>
                         </table>
                     </div>
+
+                    {/* add item  */}
+                    <a href="/additem">
+                        <div className="absolute bottom-2 right-2 w-20 h-20 flex items-center justify-center rounded-full bg-blue-500 ">
+                            <span className="text-white">
+                                <Plus size={38} />
+                            </span>
+                        </div>
+                    </a>
                 </div>
             </div>
         </>

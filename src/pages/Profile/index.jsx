@@ -12,10 +12,9 @@ import {
 
 function Profile() {
     const menuItems = [
-        { icon: <User size={18} color="#f97316" />, label: "Ver Perfil", href: "/home" },
+        { icon: <User size={18} color="#f97316" />, label: "Ver Home", href: "/home" },
         { icon: <PackageSearch size={18} color="#2563eb" />, label: "Ver Estoque", href: "/produtos" },
-        { icon: <LayoutDashboard size={18} color="#10b981" />, label: "Estatísticas", href: "/dashboard" },
-        { icon: <Settings size={18} color="#6366f1" />, label: "Configurações", href: "/" },
+        { icon: <LayoutDashboard size={18} color="#10b981" />, label: "Dashboard", href: "/dashboard" },
         { icon: <LogOut size={18} color="#ef4444" />, label: "Sair", href: "/" },
     ];
 
@@ -35,9 +34,7 @@ function Profile() {
                                 <Camera />
                             </div>
                             <h1 className="text-2xl font-bold text-gray-800">João 0</h1>
-                            <p className="text-blue-500 text-sm cursor-pointer mt-2 hover:underline">
-                                Alterar Perfil &gt;
-                            </p>
+
                         </div>
 
                         {/* Menu (lado direito) */}
