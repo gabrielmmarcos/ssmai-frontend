@@ -96,7 +96,7 @@ function ItensDetalhes() {
                             </div>
                         </div>
 
-                        {/* Tabela de ENTRADAS / SAÍDAS */}
+                        {/* Tabela de ENTRADAS / SAÍDAS  data, movimentacao, tipo*/}
                         <div className="w-full mt-8">
                             <div className="flex flex-col lg:flex-row items-center justify-start gap-5 lg:justify-between mb-4">
                                 <h2 className="text-2xl font-bold text-blue-600">Histórico de Movimentações</h2>
