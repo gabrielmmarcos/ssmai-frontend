@@ -14,6 +14,8 @@ function AddItem() {
     });
 
     const [showModal, setShowModal] = useState(false);
+    const [responseTitle, setResponseTitle] = useState("");
+    const [responseMessage, setResponseMessage] = useState("");
     // const [csvFile, setCsvFile] = useState(null);
 
     const handleChange = (e) => {
@@ -34,10 +36,15 @@ function AddItem() {
 
             const response = await api.post("/products/", produto);
             console.log("Produto criado:", response.data);
+            setResponseTitle("Sucesso!")
+            setResponseMessage("Produto criado com sucesso ")
             setShowModal(true);
+
         } catch (error) {
             console.error("Erro ao adicionar produto:", error);
-            alert("Erro ao salvar o produto. Veja o console.");
+            setResponseTitle("Erro")
+            setResponseMessage("Erro na criação do Produto")
+            setShowModal(true);
         }
     };
 
@@ -57,10 +64,14 @@ function AddItem() {
             });
 
             console.log("Upload concluído:", response.data);
+            setResponseTitle("Sucesso");
+            setResponseMessage("CSV enviado com sucesso!");
             setShowModal(true);
         } catch (error) {
             console.error("Erro ao enviar o arquivo CSV:", error);
-            alert("Erro ao enviar o arquivo CSV. Veja o console.");
+            setResponseTitle("Erro");
+            setResponseMessage("Arquivo CSV inválido.");
+            setShowModal(true);
         }
     };
 
@@ -105,21 +116,29 @@ function AddItem() {
                             Salvar
                         </button>
 
-                        {/* Botão + input de upload direto */}
-                        <div className="mt-3">
+                        {/* Botão carregar estoque */}
+                        <div className="mt-3 flex items-center justify-center w-full cursor-pointer">
                             <label
                                 htmlFor="csvInput"
-                                className="cursor-pointer bg-green-500 text-white font-semibold py-2 px-4 rounded-md transition hover:bg-green-600 flex items-center justify-center gap-2"
+                                className=" cursor-pointer w-full bg-green-500 text-white font-semibold py-2 px-4 rounded-md transition  flex items-center justify-center"
                             >
                                 Adicionar Estoque Completo
                             </label>
 
-                            <span
-                                title="O arquivo deve ser CSV com as colunas: id, categoria, created_at, updated_at, nome, id_empresas"
-                                className="cursor-pointer text-white bg-green-600 rounded-full w-5 h-5 flex items-center justify-center text-xs hover:bg-green-700"
-                            >
-                                i
-                            </span>
+                            {/* Ícone "i" com tooltip */}
+                            <div className="relative ml-2">
+                                <span className=" cursor-pointer text-white bg-green-600 rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold hover:bg-green-700 peer">
+                                    i
+                                </span>
+
+                                {/* Tooltip → aparece apenas no hover do "i" */}
+                                <div className="absolute right-1/2 translate-x-1/2 mt-2 w-60 bg-white text-gray-700 text-center text-sm rounded-md shadow-lg opacity-0 peer-hover:opacity-100 transition-opacity duration-200 p-2 z-10">
+                                    O arquivo deve ser CSV com as colunas:<br />
+                                    <strong>id, categoria, created_at, updated_at, nome, id_empresas</strong>
+                                </div>
+                            </div>
+
+
                             <input
                                 type="file"
                                 id="csvInput"
@@ -127,15 +146,8 @@ function AddItem() {
                                 onChange={handleCsvUpload}
                                 className="hidden"
                             />
-
-                            {/* Info sobre o CSV */}
-                            {/* <p className="flex items-start text-gray-500 text-sm mt-2 gap-1">
-                                <Info size={16} className="text-blue-500 mt-0.5" />
-                                O arquivo deve ser <b>CSV</b> e conter as colunas:
-                                <br />
-                                <code className="text-gray-700">id, categoria, created_at, updated_at, nome, id_empresas</code>
-                            </p> */}
                         </div>
+
 
                         <ResponseAPI
                             open={showModal}
@@ -143,8 +155,8 @@ function AddItem() {
                                 setShowModal(false);
                                 navigate("/estoque");
                             }}
-                            title="Sucesso!"
-                            message="Operação concluída com sucesso!"
+                            title={responseTitle}
+                            message={responseMessage}
                         />
 
                         <button

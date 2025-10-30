@@ -14,7 +14,7 @@ function Produtos() {
     useEffect(() => {
         async function carregarProdutosEEstoque() {
             try {
-                const response = await api.get("/products/all?limit=100");
+                const response = await api.get("/products/all_by_user_enterpryse?offset=0&limit=100");
                 const produtosData = response.data.products;
                 setProdutos(produtosData);
 

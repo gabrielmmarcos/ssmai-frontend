@@ -9,6 +9,8 @@ import {
     ChevronRight,
     Camera,
 } from "lucide-react";
+import { useEffect, useState } from "react";
+import api from "../../api/api";
 
 function Profile() {
     const menuItems = [
@@ -18,6 +20,21 @@ function Profile() {
         { icon: <LogOut size={18} color="#ef4444" />, label: "Sair", href: "/" },
     ];
 
+
+    //api para pegar nome do usuário
+    const [userName, setUserName] = useState("João 0");
+    useEffect(() => {
+        async function carregarNomeUsuario() {
+            try {
+                const response = await api.get("/users/me");
+                setUserName(response.data.name || "Usuário");
+            } catch (error) {
+                console.error("Erro ao carregar nome do usuário:", error);
+            }
+        }
+
+        carregarNomeUsuario();
+    }, []);
     return (
         <>
             <div className="flex w-full">
@@ -33,7 +50,7 @@ function Profile() {
 
                                 <Camera />
                             </div>
-                            <h1 className="text-2xl font-bold text-gray-800">João 0</h1>
+                            <h1 className="text-2xl font-bold text-gray-800">{userName}</h1>
 
                         </div>
 

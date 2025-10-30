@@ -25,6 +25,7 @@ function ItensDetalhes() {
     const [responseOpen, setResponseOpen] = useState(false);
     const [responseMessage, setResponseMessage] = useState("");
     const [responseTitle, setTitle] = useState("");
+    const [showModal, setShowModal] = useState(false);
 
 
 
@@ -32,7 +33,7 @@ function ItensDetalhes() {
     useEffect(() => {
         async function carregarProduto() {
             try {
-                const response = await api.get(`/products/all_by_user_enterpryse`);
+                const response = await api.get(`/products/all_by_user_enterpryse?offset=0&limit=100`);
                 const produtos = response.data.products;
                 const produtoEncontrado = produtos.find((p) => p.id === Number(id));
                 if (produtoEncontrado) {
@@ -90,7 +91,7 @@ function ItensDetalhes() {
 
     // api get movimentaaoes
     const buscarMovimentacoes = useCallback(async () => {
-        const res = await api.get(`/stock/moviments/${id}`);
+        const res = await api.get(`/stock/moviments/${id}?offset=0&limit=100`);
         setMovimentacoes(res.data.products);
     }, [id]);
 
@@ -150,6 +151,40 @@ function ItensDetalhes() {
             setTitle("Erro!");
             setResponseMessage("Erro ao adicionar movimentação.");
             setResponseOpen(true);
+        }
+    };
+
+    //api csv historio movimentacoes
+    // Upload de CSV
+    const handleCsvUpload = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        // setCsvFile(file);
+
+        const data = new FormData();
+        data.append("csv_file", file);
+
+        try {
+            const response = await api.post("/stock/moviments/insert_batch", data, {
+                headers: { "Content-Type": "multipart/form-data" },
+            });
+
+            console.log("Upload concluído:", response.data);
+            setModalAberto(false);;
+
+            await buscarMovimentacoes();
+            await getStock();
+
+            console.log("Upload concluído:", response.data);
+            setTitle("Sucesso");
+            setResponseMessage("CSV enviado com sucesso!");
+            setShowModal(true);
+        } catch (error) {
+            console.error("Erro ao enviar o arquivo CSV:", error);
+            setTitle("Erro");
+            setResponseMessage("Arquivo CSV inválido.");
+            setShowModal(true);
         }
     };
 
@@ -241,7 +276,7 @@ function ItensDetalhes() {
                                     setTipo("entrada");
                                     setModalAberto(true);
                                 }}
-                                className="flex items-center gap-2 bg-green-500 text-white px-4 py-2 rounded-md transition cursor-pointer"
+                                className="flex items-center gap-2 bg-blue-500 text-white px-4 py-2 rounded-md transition cursor-pointer"
                             >
                                 <Plus size={16} /> Adicionar Entrada
                             </button>
@@ -255,6 +290,32 @@ function ItensDetalhes() {
                             >
                                 <Plus size={16} /> Adicionar Saída
                             </button>
+                            {/* Botão carregar historico de movimentacoes */}
+                            <div
+                            >
+                                <label
+                                    htmlFor="csvInput"
+                                    className="flex items-center gap-2 bg-green-500 text-white px-4 py-2 rounded-md transition cursor-pointer"
+                                > <Plus size={16} />
+                                    Adicionar Histórico Completo
+                                </label>
+
+                                {/* <span
+                                    title="O arquivo deve ser CSV com as colunas: id, categoria, created_at, updated_at, nome, id_empresas"
+                                    className="cursor-pointer text-white bg-green-600 rounded-full w-5 h-5 flex items-center justify-center text-xs hover:bg-green-700"
+                                >
+                                    i
+                                </span> */}
+                                <input
+                                    type="file"
+                                    id="csvInput"
+                                    accept=".csv"
+                                    onChange={handleCsvUpload}
+                                    className="hidden"
+                                />
+
+
+                            </div>
                         </div>
 
                         {/* Tabela */}
@@ -317,9 +378,8 @@ function ItensDetalhes() {
 
 
                                                     <td className="py-3 px-4 text-center border border-blue-100">
-                                                        {m.tipo === "Entrada"
-                                                            ? `R$ ${m.preco_und?.toFixed(2).replace(".", ",")}`
-                                                            : "–"}
+                                                        {m.preco_und?.toFixed(2).replace(".", ",")}
+
                                                     </td>
 
 
@@ -421,6 +481,14 @@ function ItensDetalhes() {
                 title={responseTitle}
                 message={responseMessage}
             />
+            <ResponseAPI
+                open={showModal}
+                onClose={() => setShowModal(false)}
+                title={responseTitle}
+                message={responseMessage}
+            />
+
+
 
         </>
     );

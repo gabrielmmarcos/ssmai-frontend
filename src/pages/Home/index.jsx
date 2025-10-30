@@ -23,6 +23,22 @@ function Home() {
 
     carregarProdutos();
   }, []);
+
+  //api para pegar nome do usuário
+  const [userName, setUserName] = useState("João 0");
+  useEffect(() => {
+    async function carregarNomeUsuario() {
+      try {
+        const response = await api.get("/users/me");
+        setUserName(response.data.name || "Usuário");
+      } catch (error) {
+        console.error("Erro ao carregar nome do usuário:", error);
+      }
+    }
+
+    carregarNomeUsuario();
+  }, []);
+
   return (
     <>
       <div className="flex w-full">
@@ -33,7 +49,7 @@ function Home() {
         <div className="flex flex-col flex-1 py-28 px-10 lg:py-10 min-h-screen bg-gray-50 overflow-x-hidden ml-0 lg:ml-52">
           {/* Título */}
           <h1 className="text-2xl lg:text-5xl text-center lg:text-left font-bold text-gray-800 mb-8">
-            Bem-vindo, <span className="text-blue-600">João 0</span>
+            Bem-vindo, <span className="text-blue-600">{userName}</span>
           </h1>
 
           <Dashboard />
