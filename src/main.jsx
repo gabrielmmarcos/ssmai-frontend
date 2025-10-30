@@ -8,10 +8,10 @@ import Login from "./pages/Login";
 import Profile from "./pages/Profile"
 import Dashboards from "./pages/Dashboard";
 import Chatbot from "./pages/Chatbot";
+// produtos
+import Produtos from "./pages/Estoque"
 
-import Produtos from "./pages/Produtos"
-
-{/* crud produtos */ }
+//crud produto
 import AddItem from "./pages/AddItem";
 import ItensDetalhes from "./pages/VerItem";
 import EditarItem from "./pages/EditarItem";
@@ -38,19 +38,24 @@ const router = createBrowserRouter([
     path: "/chatbot",
     element: <Chatbot />,
   },
+  // produtos
   {
-    path: "/produtos",
+    path: "/estoque",
     element: <Produtos />,
   },
 
   /* crud produto */
   {
-    path: "/additem",
-    element: <AddItem />,
+    path: "/veritem/:id",
+    element: <ItensDetalhes />,
   },
   {
-    path: "/editaritem",
+    path: "/editaritem/:id",
     element: <EditarItem />,
+  },
+  {
+    path: "/additem",
+    element: <AddItem />,
   },
   {
     path: "/veritem",

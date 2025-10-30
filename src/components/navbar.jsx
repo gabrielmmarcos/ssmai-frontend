@@ -14,7 +14,7 @@ const Navbar = () => {
 
   const links = [
     { icon: <Home size={22} />, text: "Home", href: "/home" },
-    { icon: <PackageSearch size={22} />, text: "Produtos", href: "/produtos" },
+    { icon: <PackageSearch size={22} />, text: "Estoque", href: "/estoque" },
     { icon: <LayoutDashboard size={22} />, text: "Dashboard", href: "/dashboard" },
     { icon: <Bot size={22} />, text: "Chat-Bot", href: "/chatbot" },
     { icon: <User size={22} />, text: "Conta", href: "/profile" },

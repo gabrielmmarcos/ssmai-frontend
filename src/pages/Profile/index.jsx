@@ -12,8 +12,8 @@ import {
 
 function Profile() {
     const menuItems = [
-        { icon: <User size={18} color="#f97316" />, label: "Ver Home", href: "/home" },
-        { icon: <PackageSearch size={18} color="#2563eb" />, label: "Ver Estoque", href: "/produtos" },
+        { icon: <User size={18} color="#f97316" />, label: "Home", href: "/home" },
+        { icon: <PackageSearch size={18} color="#2563eb" />, label: "Estoque", href: "/estoque" },
         { icon: <LayoutDashboard size={18} color="#10b981" />, label: "Dashboard", href: "/dashboard" },
         { icon: <LogOut size={18} color="#ef4444" />, label: "Sair", href: "/" },
     ];
