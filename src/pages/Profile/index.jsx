@@ -4,7 +4,6 @@ import {
     User,
     PackageSearch,
     LayoutDashboard,
-    Settings,
     LogOut,
     ChevronRight,
     Camera,
@@ -35,6 +34,16 @@ function Profile() {
 
         carregarNomeUsuario();
     }, []);
+
+
+    //remover token
+
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        window.location.href = "/";
+        console.log("token")
+    };
+
     return (
         <>
             <div className="flex w-full">
@@ -58,22 +67,28 @@ function Profile() {
                         <div className="bg-gray-100 rounded-3xl shadow-sm p-6 w-full max-w-md">
                             <ul className="flex flex-col divide-y divide-gray-200">
                                 {menuItems.map((item, index) => (
-                                    <a href={item.href}>
-                                        <li
-                                            key={index}
-                                            className="flex items-center justify-between py-4 px-2 hover:bg-gray-50 transition cursor-pointer rounded-xl"
-                                        >
-                                            <div className="flex items-center gap-3">
-                                                <div className="flex items-center justify-center w-10 h-10 bg-white rounded-full shadow-sm">
-                                                    {item.icon}
-                                                </div>
-                                                <span className="text-gray-700 font-medium">{item.label}</span>
+                                    <li
+                                        key={index}
+                                        onClick={item.label === "Sair" ? handleLogout : undefined}
+                                        className="flex items-center justify-between py-4 px-2 hover:bg-gray-50 transition cursor-pointer rounded-xl"
+                                    >
+                                        <div className="flex items-center gap-3">
+                                            <div className="flex items-center justify-center w-10 h-10 bg-white rounded-full shadow-sm">
+                                                {item.icon}
                                             </div>
-                                            <ChevronRight size={18} color="#9ca3af" />
-                                        </li>
-                                    </a>
+                                            {item.label === "Sair" ? (
+                                                <span className="text-red-500 font-medium">{item.label}</span>
+                                            ) : (
+                                                <a href={item.href} className="text-gray-700 font-medium">
+                                                    {item.label}
+                                                </a>
+                                            )}
+                                        </div>
+                                        <ChevronRight size={18} color="#9ca3af" />
+                                    </li>
                                 ))}
                             </ul>
+
                         </div>
 
                     </div>

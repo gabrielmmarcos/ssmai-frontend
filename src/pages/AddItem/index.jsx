@@ -61,6 +61,7 @@ function AddItem() {
         try {
             const response = await api.post("/products/insert_batch", data, {
                 headers: { "Content-Type": "multipart/form-data" },
+
             });
 
             console.log("Upload concluído:", response.data);
@@ -117,27 +118,28 @@ function AddItem() {
                         </button>
 
                         {/* Botão carregar estoque */}
-                        <div className="mt-3 flex items-center justify-center w-full cursor-pointer">
+                        <div className="mt-3 flex items-center justify-center w-full">
                             <label
                                 htmlFor="csvInput"
-                                className=" cursor-pointer w-full bg-green-500 text-white font-semibold py-2 px-4 rounded-md transition  flex items-center justify-center"
+                                className="relative cursor-pointer w-full bg-green-500 text-white font-semibold py-2 px-4 rounded-md transition flex items-center justify-center"
                             >
+
+                                <div className="absolute left-3 flex items-center">
+                                    <span className="cursor-pointer text-white bg-green-600 rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold hover:bg-green-700 peer">
+                                        i
+                                    </span>
+
+
+                                    <div className="absolute right-6 top-1/2 translate-y-1/2 w-60 bg-white text-gray-700 text-center text-sm rounded-md shadow-lg opacity-0 peer-hover:opacity-100 transition-opacity duration-200 p-2 z-10">
+                                        O arquivo deve ser CSV com as colunas:
+                                        <br />
+                                        <strong>id, categoria, created_at, updated_at, nome, id_empresas</strong>
+                                    </div>
+                                </div>
+
+                                {/* Texto centralizado */}
                                 Adicionar Estoque Completo
                             </label>
-
-                            {/* Ícone "i" com tooltip */}
-                            <div className="relative ml-2">
-                                <span className=" cursor-pointer text-white bg-green-600 rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold hover:bg-green-700 peer">
-                                    i
-                                </span>
-
-                                {/* Tooltip → aparece apenas no hover do "i" */}
-                                <div className="absolute right-1/2 translate-x-1/2 mt-2 w-60 bg-white text-gray-700 text-center text-sm rounded-md shadow-lg opacity-0 peer-hover:opacity-100 transition-opacity duration-200 p-2 z-10">
-                                    O arquivo deve ser CSV com as colunas:<br />
-                                    <strong>id, categoria, created_at, updated_at, nome, id_empresas</strong>
-                                </div>
-                            </div>
-
 
                             <input
                                 type="file"
@@ -147,6 +149,7 @@ function AddItem() {
                                 className="hidden"
                             />
                         </div>
+
 
 
                         <ResponseAPI

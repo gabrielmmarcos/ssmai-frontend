@@ -34,7 +34,7 @@ const Navbar = () => {
       <div
         className={`fixed top-0 left-0 min-h-screen w-[230px] bg-blue-500 flex flex-col items-start justify-start shadow-lg transform transition-transform duration-300 
         ${isOpen ? "translate-x-0" : "-translate-x-full"} 
-        lg:translate-x-0`}
+        lg:translate-x-0 z-40`}
       >
         {/* Logo */}
         <div className="flex items-center gap-3 pr-5 pl-5 pb-5 pt-20 lg:p-5  w-full">

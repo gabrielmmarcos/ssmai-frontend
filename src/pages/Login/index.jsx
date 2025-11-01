@@ -26,7 +26,9 @@ function Login() {
       // Salva o token no navegador
       localStorage.setItem("token", response.data.access_token);
       console.log(localStorage.getItem("token"));
+      console.log("token: ", response.data.access_token)
       navigate("/home");
+
 
     } catch (error) {
       console.error("Erro ao fazer login:", error);

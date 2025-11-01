@@ -1,12 +1,11 @@
 import Navbar from "../../components/navbar";
 import ResponseAPI from "../../components/responseapi";
 import ConfirmModal from "../../components/confirmModal";
-import { useParams } from "react-router-dom";
 import { Camera, Plus } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import api from "../../api/api";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 function ItensDetalhes() {
     const { id } = useParams(); //id da URL
@@ -88,7 +87,6 @@ function ItensDetalhes() {
         }
     };
 
-
     // api get movimentaaoes
     const buscarMovimentacoes = useCallback(async () => {
         const res = await api.get(`/stock/moviments/${id}?offset=0&limit=100`);
@@ -154,44 +152,41 @@ function ItensDetalhes() {
         }
     };
 
-    //api csv historio movimentacoes
     // Upload de CSV
+    const [loading, setLoading] = useState(false);
+
     const handleCsvUpload = async (e) => {
         const file = e.target.files[0];
         if (!file) return;
-
-        // setCsvFile(file);
 
         const data = new FormData();
         data.append("csv_file", file);
 
         try {
+            // Mostra modal de "carregando"
+            setLoading(true);
+            setShowModal(true);
+            setTitle("Enviando...");
+            setResponseMessage("O arquivo está sendo processado, aguarde.");
+
             const response = await api.post("/stock/moviments/insert_batch", data, {
                 headers: { "Content-Type": "multipart/form-data" },
             });
-
             console.log("Upload concluído:", response.data);
-            setModalAberto(false);;
-
+            // Depois que a API responder
             await buscarMovimentacoes();
             await getStock();
 
-            console.log("Upload concluído:", response.data);
+            setLoading(false);
             setTitle("Sucesso");
             setResponseMessage("CSV enviado com sucesso!");
-            setShowModal(true);
         } catch (error) {
             console.error("Erro ao enviar o arquivo CSV:", error);
+            setLoading(false);
             setTitle("Erro");
             setResponseMessage("Arquivo CSV inválido.");
-            setShowModal(true);
         }
     };
-
-
-
-
-
 
 
     return (
@@ -270,13 +265,13 @@ function ItensDetalhes() {
                         </h2>
 
                         {/* Botões */}
-                        <div className="flex gap-3 mb-5">
+                        <div className="w-fit grid grid-cols-1 lg:grid-cols-2 gap-3 mb-5">
                             <button
                                 onClick={() => {
                                     setTipo("entrada");
                                     setModalAberto(true);
                                 }}
-                                className="flex items-center gap-2 bg-blue-500 text-white px-4 py-2 rounded-md transition cursor-pointer"
+                                className="flex items-center gap-2 bg-blue-500 text-white px-4 py-2 rounded-md  transition cursor-pointer"
                             >
                                 <Plus size={16} /> Adicionar Entrada
                             </button>
@@ -286,26 +281,34 @@ function ItensDetalhes() {
                                     setTipo("saida");
                                     setModalAberto(true);
                                 }}
-                                className="flex items-center gap-2 bg-red-500 text-white px-4 py-2 rounded-md transition cursor-pointer"
+                                className="flex items-center gap-2 bg-red-500 text-white px-4 py-2 rounded-md   transition cursor-pointer"
                             >
                                 <Plus size={16} /> Adicionar Saída
                             </button>
+
                             {/* Botão carregar historico de movimentacoes */}
-                            <div
-                            >
+                            <div className=" lg:col-span-2 flex items-center  justify-center w-full">
                                 <label
                                     htmlFor="csvInput"
-                                    className="flex items-center gap-2 bg-green-500 text-white px-4 py-2 rounded-md transition cursor-pointer"
-                                > <Plus size={16} />
-                                    Adicionar Histórico Completo
+                                    className="relative cursor-pointer w-fit bg-green-500 text-white py-2 pr-4 pl-10 rounded-md transition flex items-center justify-center"
+                                >
+
+                                    <div className="absolute left-3 flex items-center">
+                                        <span className="cursor-pointer text-white bg-green-600 rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold hover:bg-green-700 ">
+                                            i
+                                        </span>
+
+
+                                        <div className="absolute right-6 top-1/2 translate-y-1/2 w-60 bg-white text-gray-600 text-center text-sm rounded-md shadow-lg opacity-0 peer-hover:opacity-100 transition-opacity duration-200 p-2 ">
+                                            O arquivo deve ser CSV com as colunas:
+                                            <br />
+                                            id, id_produtos, tipo, quantidade	preco_und, total, date, updated_at
+                                        </div>
+                                    </div>
+
+                                    Adicionar Todas Movimentações
                                 </label>
 
-                                {/* <span
-                                    title="O arquivo deve ser CSV com as colunas: id, categoria, created_at, updated_at, nome, id_empresas"
-                                    className="cursor-pointer text-white bg-green-600 rounded-full w-5 h-5 flex items-center justify-center text-xs hover:bg-green-700"
-                                >
-                                    i
-                                </span> */}
                                 <input
                                     type="file"
                                     id="csvInput"
@@ -313,10 +316,9 @@ function ItensDetalhes() {
                                     onChange={handleCsvUpload}
                                     className="hidden"
                                 />
-
-
                             </div>
                         </div>
+
 
                         {/* Tabela */}
                         <div className="overflow-x-auto bg-white rounded-lg border border-gray-100 shadow-sm w-full lg:w-3/4">
@@ -417,7 +419,9 @@ function ItensDetalhes() {
                             Adicionar {tipo === "entrada" ? "Entrada" : "Saída"}
                         </h2>
 
-                        {tipo === "entrada" && (
+                        {/* Campo de preço */}
+                        {tipo === "entrada" ? (
+                            // Se for ENTRADA
                             <input
                                 type="number"
                                 placeholder="Preço (R$)"
@@ -425,8 +429,19 @@ function ItensDetalhes() {
                                 onChange={(e) => setPrecoInput(e.target.value)}
                                 className="w-full border border-gray-300 rounded-md px-3 py-2 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-400"
                             />
+                        ) : (
+                            // Se for SAÍDA 
+                            <div className="mb-4">
+                                <input
+                                    type="text"
+                                    value={formatarPreco(stock?.custo_medio)}
+                                    readOnly
+                                    className="w-full border border-gray-300 rounded-md px-3 py-2 bg-gray-100 text-gray-700 cursor-not-allowed"
+                                />
+                            </div>
                         )}
 
+                        {/* input quantidade */}
                         <input
                             type="number"
                             placeholder="Quantidade (und.)"
@@ -452,6 +467,8 @@ function ItensDetalhes() {
                     </div>
                 </div>
             )}
+
+
 
             {/* MODAL - Confirmar remoção */}
             <ConfirmModal
@@ -485,7 +502,11 @@ function ItensDetalhes() {
                 open={showModal}
                 onClose={() => setShowModal(false)}
                 title={responseTitle}
-                message={responseMessage}
+                message={
+                    loading
+                        ? "Processando o Arquivo, Por Favor Aguarde."
+                        : responseMessage
+                }
             />
 
 

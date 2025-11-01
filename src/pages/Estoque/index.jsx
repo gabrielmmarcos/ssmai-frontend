@@ -49,7 +49,7 @@ function Produtos() {
         carregarProdutosEEstoque();
     }, []);
 
-
+    //get stok
     const [stocks, setStocks] = useState({});
 
     useEffect(() => {
@@ -174,10 +174,16 @@ function Produtos() {
                                 id={p.id}
                                 nome={p.nome}
                                 categoria={p.categoria}
+                                preco={stocks[p.id]
+                                    ? formatarPreco(stocks[p.id].custo_medio)
+                                    : ""}
+                                quantidade={stocks[p.id]
+                                    ? stocks[p.id].quantidade_disponivel
+                                    : ""}
                             />
                         ))
                     ) : (
-                        <p className="text-gray-500">Nenhum produto encontrado.</p>
+                        <p className="text-gray-500 w-full flex justify-center">Nenhum produto encontrado.</p>
                     )}
                 </div>
                 <a href="/additem">

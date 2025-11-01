@@ -12,7 +12,7 @@ api.interceptors.request.use(
     }
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => Promise.reject(error, console.log("Não tem token"))
 );
 
 export default api;

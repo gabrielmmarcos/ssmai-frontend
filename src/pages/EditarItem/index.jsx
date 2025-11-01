@@ -10,6 +10,8 @@ function EditarItem() {
     const navigate = useNavigate();
 
     const [showModal, setShowModal] = useState(false);
+    const [responseTitle, setResponseTitle] = useState("");
+    const [responseMassage, setResponseMassage] = useState("");
 
     const [produto, setProduto] = useState({ nome: "", categoria: "" });
 
@@ -17,7 +19,7 @@ function EditarItem() {
         async function carregarProduto() {
             try {
                 // Busca todos os produtos da empresa do usuário
-                const response = await api.get(`/products/all_by_user_enterpryse`);
+                const response = await api.get(`/products/all_by_user_enterpryse?offset=0&limit=100`);
                 const produtos = response.data.products;
 
                 // Procura o produto com o id específico
@@ -36,16 +38,24 @@ function EditarItem() {
         carregarProduto();
     }, [id]);
 
+    //put produtos
     const handleSalvar = async () => {
         try {
             await api.put(`/products/${id}`, produto);
+            setResponseTitle("Sucesso!")
+            setResponseMassage("Produto Editado com Sucesso!")
             setShowModal(true);
 
         } catch (error) {
             console.error("Erro ao salvar produto:", error);
-            alert("Erro ao salvar produto.");
+            setResponseTitle("Erro!")
+            setResponseMassage("Erro ao Editar o Produto!")
+            setShowModal(true);
         }
     };
+
+    //get placeholder
+
 
     return (
         <>
@@ -112,8 +122,8 @@ function EditarItem() {
 
                     navigate(`/veritem/${id}`);
                 }}
-                title="Sucesso!"
-                message="Produto editado com sucesso!"
+                title={responseTitle}
+                message={responseMassage}
             />
         </>
     );
