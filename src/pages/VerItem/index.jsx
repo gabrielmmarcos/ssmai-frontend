@@ -4,7 +4,7 @@ import ConfirmModal from "../../components/confirmModal";
 import { Camera, Plus } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import api from "../../api/api";
-import axios from "axios";
+// import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 
 function ItensDetalhes() {
@@ -111,8 +111,8 @@ function ItensDetalhes() {
         try {
             const endpoint =
                 tipo === "entrada"
-                    ? `http://localhost:8000/stock/entry/${id}`
-                    : `http://localhost:8000/stock/exit/${id}`;
+                    ? `/stock/entry/${id}`
+                    : `/stock/exit/${id}`;
 
             const body =
                 tipo === "entrada"
@@ -126,7 +126,7 @@ function ItensDetalhes() {
                         quantidade: Number(quantidadeInput),
                     };
 
-            await axios.post(endpoint, body, {
+            await api.post(endpoint, body, {
                 headers: { Authorization: `Bearer ${token}` },
             });
 
@@ -249,7 +249,7 @@ function ItensDetalhes() {
                                 </a>
                                 <button
                                     onClick={() => setShowConfirm(true)}
-                                    className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 cursor-pointer"
+                                    className="px-4 py-2 bg-red-500 text-white font-semibold  rounded-lg  cursor-pointer"
                                 >
                                     Remover Produto
                                 </button>
@@ -290,16 +290,16 @@ function ItensDetalhes() {
                             <div className=" lg:col-span-2 flex items-center  justify-center w-full">
                                 <label
                                     htmlFor="csvInput"
-                                    className="relative cursor-pointer w-fit bg-green-500 text-white py-2 pr-4 pl-10 rounded-md transition flex items-center justify-center"
+                                    className="relative text-sm md:text-[16px] cursor-pointer w-fit bg-green-500 text-white py-2 pr-4 pl-10 rounded-md transition flex items-center justify-center"
                                 >
 
                                     <div className="absolute left-3 flex items-center">
-                                        <span className="cursor-pointer text-white bg-green-600 rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold hover:bg-green-700 ">
+                                        <span className="group cursor-pointer text-white bg-green-600 rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold hover:bg-green-700 peer ">
                                             i
                                         </span>
 
 
-                                        <div className="absolute right-6 top-1/2 translate-y-1/2 w-60 bg-white text-gray-600 text-center text-sm rounded-md shadow-lg opacity-0 peer-hover:opacity-100 transition-opacity duration-200 p-2 ">
+                                        <div className="absolute right-6 top-1/2 translate-x-1/2 w-60 bg-white border border-gray-300 text-blue-500 text-center text-sm rounded-md shadow-lg opacity-0 peer-hover:opacity-100 transition-opacity duration-200 p-2 ">
                                             O arquivo deve ser CSV com as colunas:
                                             <br />
                                             id, id_produtos, tipo, quantidade	preco_und, total, date, updated_at

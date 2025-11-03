@@ -67,7 +67,7 @@ function EditarItem() {
 
                         <div className="flex flex-col w-full lg:w-1/2 max-w-md p-10 gap-2">
                             <h1 className="text-5xl font-bold text-blue-500 mb-2">
-                                Editar
+                                Editar Produto
                             </h1>
 
                             <div>

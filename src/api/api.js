@@ -1,7 +1,10 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://192.168.15.3:8000", // URL do FastAPI
+  baseURL:
+    window.location.hostname === "localhost" // URL do FastAPI
+      ? "http://localhost:8000"
+      : "http://192.168.15.3:8000",
 });
 
 api.interceptors.request.use(
