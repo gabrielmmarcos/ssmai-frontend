@@ -5,6 +5,7 @@ import "./index.css";
 
 import Home from "./pages/Home";
 import Login from "./pages/Login";
+import Cadastro from "./pages/Cadastro"
 import Profile from "./pages/Profile"
 import Dashboards from "./pages/Dashboard";
 import Chatbot from "./pages/Chatbot";
@@ -23,9 +24,14 @@ const router = createBrowserRouter([
     element: <Login />,
   },
   {
+    path: "/cadastro",
+    element: <Cadastro />,
+  },
+  {
     path: "/home",
     element: <Home />,
   },
+
   {
     path: "/profile",
     element: <Profile />,

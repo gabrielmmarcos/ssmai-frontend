@@ -6,6 +6,8 @@ import ResponseAPI from "../../components/responseapi";
 
 function Login() {
   const navigate = useNavigate();
+
+  //states
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showModal, setShowModal] = useState(false);
@@ -100,10 +102,10 @@ function Login() {
               </button>
 
               <a
-                href="#"
+                href="/cadastro"
                 className="text-center text-blue-500 hover:underline text-sm"
               >
-                Esqueceu sua senha?
+                Não Tem Conta? Crie uma Agora
               </a>
             </div>
           </form>
