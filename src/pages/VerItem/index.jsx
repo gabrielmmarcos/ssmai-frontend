@@ -226,7 +226,7 @@ function ItensDetalhes() {
                                 </div>
 
                                 <div>
-                                    <h3 className="text-sm font-semibold text-gray-500 uppercase">Quantidade Ideal</h3>
+                                    <h3 className="text-sm font-semibold text-gray-500 uppercase">Estoque Ideal</h3>
                                     <p className="text-lg text-gray-800"> - </p>
                                 </div>
 

@@ -1,8 +1,8 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import Navbar from "../../components/navbar";
 import ResponseAPI from "../../components/responseapi";
 import CameraDesktop from "../../components/opencamera";
-import { Camera } from "lucide-react";
+import { Camera, Wand2 } from "lucide-react";
 import api from "../../api/api";
 import { useNavigate } from "react-router-dom";
 
@@ -20,9 +20,8 @@ function AddItem() {
     const [showImageChoiceModal, setShowImageChoiceModal] = useState(false);
     const [fromCamera, setFromCamera] = useState(false)
     const [loading, setLoading] = useState(false);
-    const [streaming, setStreaming] = useState(false)
-
-    const videoRef = useRef(null);
+    // const [streaming, setStreaming] = useState(false) - descontinuado
+    // const videoRef = useRef(null);
 
     //post produto
     const handleChange = (e) => {
@@ -78,7 +77,7 @@ function AddItem() {
             setShowModal(true);
         }
     };
-    // post upload img
+    // post upload img 
     const handleImageUpload = async (fileimg) => {
         if (!fileimg) return;
 
@@ -91,34 +90,37 @@ function AddItem() {
             setResponseTitle("Processando...");
             setResponseMessage("Estamos lendo as informações da imagem, aguarde.");
 
-            // envia a img para retornar o id
-            const extractResponse = await api.post("/products/extract_text_from_document/fake", data, {
-                headers: { "Content-Type": "multipart/form-data" },
-            });
+            // Envia a imagem para o endpoint de extração
+            const extractResponse = await api.post(
+                "/products/extract_text_from_document/fake",
+                data,
+                { headers: { "Content-Type": "multipart/form-data" } }
+            );
 
             const idExtract = extractResponse.data.id;
-            console.log(idExtract, "Esse é o id");
+            console.log("ID da extração:", idExtract);
 
-            // post no id da img
-            const aiResponse = await api.post(`/products/generate_product_by_ai_with_extract_id/${idExtract}`);
+            // Gera o produto com IA
+            const aiResponse = await api.post(
+                `/products/generate_product_by_ai_with_extract_id/${idExtract}`
+            );
 
-            setFormData({
-                nome: aiResponse.data.nome || "",
-                categoria: aiResponse.data.categoria || "",
-            });
+            console.log("Dados retornados pela IA:", aiResponse.data);
+
+            // Redireciona automaticamente para a tela /additemia com os dados retornados
+            navigate("/additemia", { state: { aiData: aiResponse.data } });
 
             setLoading(false);
-            setResponseTitle("Sucesso!");
-            setResponseMessage("Informações preenchidas automaticamente!");
-            setFromCamera(true);
+            setShowModal(false);
         } catch (error) {
             console.error("Erro ao processar imagem:", error);
             setLoading(false);
             setResponseTitle("Erro");
             setResponseMessage("Falha ao processar imagem. Tente novamente.");
-            setFromCamera(true);
+            setShowModal(true);
         }
     };
+
 
 
     // ativa camera
@@ -213,11 +215,13 @@ function AddItem() {
                             <button
                                 type="button"
                                 onClick={() => setShowImageChoiceModal(true)}
-                                className="bg-white text-blue-500 border flex flex-row justify-center gap-2 border-blue-500 text-center font-semibold py-2 rounded-md transition hover:bg-blue-50 w-full cursor-pointer"
+                                className="bg-white text-purple-600 border flex flex-row justify-center gap-2 border-purple-500 
+                   text-center font-semibold py-2 rounded-md transition hover:bg-purple-50 w-full cursor-pointer"
                             >
-                                <Camera />  Adicionar com uma foto
+                                <Wand2 /> Adicionar com IA (Foto)
                             </button>
                         </div>
+
                     </form>
                 </div>
             </div>
@@ -230,7 +234,7 @@ function AddItem() {
                         <div className="flex flex-col gap-3">
 
                             {/* Desktop: botão abrir câmera */}
-                            {window.innerWidth >= 1024 && !streaming ? (
+                            {/* {window.innerWidth >= 1024 && !streaming ? (
                                 <button
                                     onClick={async () => {
                                         if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
@@ -250,10 +254,10 @@ function AddItem() {
                                 >
                                     Abrir Câmera
                                 </button>
-                            ) : null}
+                            ) : null} */}
 
                             {/* Vídeo desktop */}
-                            {streaming && (
+                            {/* {streaming && (
                                 <>
                                     <video ref={videoRef} autoPlay className="w-64 h-48 border rounded mb-2" />
                                     <button
@@ -276,27 +280,25 @@ function AddItem() {
                                         Tirar Foto
                                     </button>
                                 </>
-                            )}
+                            )} */}
 
-                            {/* Mobile */}
-                            {window.innerWidth < 1024 && (
-                                <>
-                                    <label
-                                        htmlFor="cameraInput"
-                                        className="cursor-pointer bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition"
-                                    >
-                                        Tirar Foto
-                                    </label>
-                                    <input
-                                        type="file"
-                                        id="cameraInput"
-                                        accept="image/*"
-                                        capture="environment"
-                                        onChange={handleFileChange}
-                                        className="hidden"
-                                    />
-                                </>
-                            )}
+
+                            <>
+                                <label
+                                    htmlFor="cameraInput"
+                                    className="lg:hidden flexcursor-pointer bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition"
+                                >
+                                    Tirar Foto
+                                </label>
+                                <input
+                                    type="file"
+                                    id="cameraInput"
+                                    accept="image/*"
+                                    capture="environment"
+                                    onChange={handleFileChange}
+                                    className="hidden"
+                                />
+                            </>
 
                             {/* Galeria */}
                             <label

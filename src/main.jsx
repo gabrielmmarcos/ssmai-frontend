@@ -16,6 +16,7 @@ import Produtos from "./pages/Estoque"
 import AddItem from "./pages/AddItem";
 import ItensDetalhes from "./pages/VerItem";
 import EditarItem from "./pages/EditarItem";
+import AddItemIA from "./pages/AddViaAI"
 
 
 const router = createBrowserRouter([
@@ -37,7 +38,7 @@ const router = createBrowserRouter([
     element: <Profile />,
   },
   {
-    path: "/dashboard",
+    path: "/dashboard/:id",
     element: <Dashboards />,
   },
   {
@@ -66,6 +67,10 @@ const router = createBrowserRouter([
   {
     path: "/veritem",
     element: <ItensDetalhes />,
+  },
+  {
+    path: "/additemia",
+    element: <AddItemIA />,
   },
 
 ]);
