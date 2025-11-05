@@ -89,7 +89,7 @@ function AddItemIA() {
             <div className="flex flex-1 min-h-screen bg-gray-50 overflow-x-hidden ml-0 lg:ml-52">
                 <div className="flex flex-col w-full h-screen items-center justify-center bg-white">
                     <h1 className="text-3xl lg:text-5xl font-bold text-blue-500 mb-4">
-                        Revisar Produto IA
+                        Revisar Informações
                     </h1>
 
                     {/* Checkboxes */}

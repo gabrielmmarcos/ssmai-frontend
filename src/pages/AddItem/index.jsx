@@ -215,8 +215,8 @@ function AddItem() {
                             <button
                                 type="button"
                                 onClick={() => setShowImageChoiceModal(true)}
-                                className="bg-white text-purple-600 border flex flex-row justify-center gap-2 border-purple-500 
-                   text-center font-semibold py-2 rounded-md transition hover:bg-purple-50 w-full cursor-pointer"
+                                className="bg-purple-500 text-white border flex flex-row justify-center gap-2 border-white
+                   text-center font-semibold py-2 rounded-md transition hover:bg-purple-600 w-full cursor-pointer"
                             >
                                 <Wand2 /> Adicionar com IA (Foto)
                             </button>

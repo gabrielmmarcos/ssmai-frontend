@@ -8,8 +8,7 @@ function Cadastro() {
 
     const [nome, setNome] = useState("");
     const [ramo, setRamo] = useState("");
-    // const [email, setEmail] = useState(""); - comentada até segunda ordem
-
+    const [email, setEmail] = useState("");
     const [showModal, setShowModal] = useState(false);
     const [responseTitle, setResponseTitle] = useState("");
     const [responseMessage, setResponseMessage] = useState("");
@@ -21,18 +20,15 @@ function Cadastro() {
             const body = {
                 nome: nome,
                 ramo: ramo,
-                // user_admin: {
-                //     email: email,
-                // },
+                email: email,
             };
 
             const response = await api.post("/enterpryse/", body);
             const senhaGerada = response.data.user_admin.password;
-            const email = response.data.user_admin.email; // comentar dps
 
             setResponseTitle("Empresa cadastrada com sucesso!");
             setResponseMessage(
-                `A senha da sua empresa é: ${senhaGerada} e o ${email} é esse.\n\nGuarde bem esta senha — ela não será mostrada novamente.`
+                `A senha da sua empresa é: ${senhaGerada}.\n\nGuarde bem esta senha — ela não será mostrada novamente.`
             );
             setShowModal(true);
         } catch (error) {
@@ -91,10 +87,10 @@ function Cadastro() {
                                 <h3 className="text-sm font-semibold text-gray-500 uppercase">Email</h3>
                                 <input
                                     type="email"
-                                    // value={email}
-                                    // onChange={(e) => setEmail(e.target.value)}
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
                                     placeholder="Digite o email do administrador"
-                                    // required
+                                    required
                                     className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 />
                             </div>
