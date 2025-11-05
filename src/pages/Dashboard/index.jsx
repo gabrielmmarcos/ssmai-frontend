@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Navbar from "../../components/navbar";
 import api from "../../api/api";
 import {
@@ -18,18 +18,34 @@ ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement, Filler, 
 
 function DashboardID() {
     const { id } = useParams();
+    const navigate = useNavigate();
 
     const [stats, setStats] = useState(null);
     const [graphData, setGraphData] = useState({ historico: [], previsoes: [] });
+    const [allProducts, setAllProducts] = useState([]);
+    const [leadTime, setLeadTime] = useState(7);
+    const [historicoFilter, setHistoricoFilter] = useState("todas");
 
+    // 🔹 Buscar lista de produtos
+    useEffect(() => {
+        async function fetchProducts() {
+            try {
+                const res = await api.get(`/products/all_by_user_enterpryse?offset=0&limit=10`);
+                setAllProducts(res.data.products || []);
+            } catch (error) {
+                console.error("Erro ao buscar produtos:", error);
+            }
+        }
+        fetchProducts();
+    }, []);
+
+    // 🔹 Buscar dados do produto e gráfico
     useEffect(() => {
         async function fetchData() {
             try {
-                // GET das informações gerais
-                const statsRes = await api.get(`/ai_analysis/${id}`);
+                const statsRes = await api.get(`/ai_analysis/${id}?lead_time=${leadTime}`);
                 setStats(statsRes.data);
 
-                // GET dos dados do gráfico
                 const graphRes = await api.get(`/ai_analysis/${id}/graph`);
                 setGraphData(graphRes.data);
             } catch (error) {
@@ -37,34 +53,61 @@ function DashboardID() {
             }
         }
         fetchData();
-    }, [id]);
+    }, [id, leadTime]);
 
-    // prepara dados para o gráfico
+    // 🔹 Aplicar filtro no histórico
+    const filteredHistorico = (() => {
+        if (historicoFilter === "todas") return graphData.historico;
+        const dias = parseInt(historicoFilter, 10);
+        const cutoff = new Date();
+        cutoff.setDate(cutoff.getDate() - dias);
+        return graphData.historico.filter((d) => new Date(d.data) >= cutoff);
+    })();
+
+    // 🔹 Preparar dados do gráfico
+    const allLabels = [
+        ...filteredHistorico.map((d) =>
+            new Date(d.data).toLocaleDateString("pt-BR", { day: "2-digit", month: "short" })
+        ),
+        ...graphData.previsoes.map((d) =>
+            new Date(d.data).toLocaleDateString("pt-BR", { day: "2-digit", month: "short" })
+        ),
+    ];
+
+    const allData = [
+        ...filteredHistorico.map((d) => d.estoque),
+        ...graphData.previsoes.map((d) => d.saida_prevista),
+    ];
+
     const data = {
-        labels: [
-            ...graphData.historico.map((d) =>
-                new Date(d.data).toLocaleDateString("pt-BR", { day: "2-digit", month: "short" })
-            ),
-            ...graphData.previsoes.map((d) =>
-                new Date(d.data).toLocaleDateString("pt-BR", { day: "2-digit", month: "short" })
-            ),
-        ],
+        labels: allLabels,
         datasets: [
             {
-                label: "Estoque Real",
-                data: graphData.historico.map((d) => d.estoque),
-                borderColor: "#3b82f6",
+                label: "Estoque (Histórico e Previsão)",
+                data: allData,
+                borderColor: (ctx) => {
+                    const chart = ctx.chart;
+                    const { ctx: canvasCtx, chartArea } = chart;
+                    if (!chartArea || allData.length === 0) return "#3b82f6";
+                    const ratio = filteredHistorico.length / allData.length || 0;
+                    const gradient = canvasCtx.createLinearGradient(
+                        chartArea.left,
+                        0,
+                        chartArea.right,
+                        0
+                    );
+                    gradient.addColorStop(0, "#3b82f6");
+                    gradient.addColorStop(Math.min(ratio, 1), "#3b82f6");
+                    gradient.addColorStop(Math.min(ratio, 1), "#9333ea");
+                    gradient.addColorStop(1, "#9333ea");
+                    return gradient;
+                },
                 backgroundColor: "rgba(59, 130, 246, 0.1)",
-                fill: true,
+                borderWidth: 2,
+                fill: false,
                 tension: 0.4,
-            },
-            {
-                label: "Estoque Previsto",
-                data: graphData.previsoes.map((d) => d.estoque_previsto),
-                borderColor: "#9333ea",
-                backgroundColor: "rgba(147, 51, 234, 0.1)",
-                fill: true,
-                tension: 0.4,
+                pointRadius: 3,
+                pointHoverRadius: 5,
             },
         ],
     };
@@ -107,7 +150,7 @@ function DashboardID() {
 
                     <Line data={data} options={options} height={120} />
 
-                    {/* Informações IA */}
+                    {/* Estatísticas IA */}
                     {stats ? (
                         <div className="grid grid-cols-5 gap-4 mt-6 text-center text-gray-600 text-sm">
                             <div>
@@ -136,6 +179,47 @@ function DashboardID() {
                             Carregando estatísticas da IA...
                         </p>
                     )}
+                </div>
+
+                {/* 🔘 Botões abaixo do dashboard */}
+                <div className="flex flex-wrap gap-4 mt-8 justify-center">
+                    {/* 1️⃣ Selecionar Produto */}
+                    <select
+                        onChange={(e) => navigate(`/dashboard/${e.target.value}`)}
+                        className="border border-gray-300 rounded-lg p-2 text-gray-700 bg-white shadow-sm"
+                    >
+                        <option>Selecionar Produto</option>
+                        {allProducts.map((p) => (
+                            <option key={p.id} value={p.id}>
+                                {p.nome}
+                            </option>
+                        ))}
+                    </select>
+
+                    {/* 2️⃣ Selecionar Lead Time */}
+                    <select
+                        value={leadTime}
+                        onChange={(e) => setLeadTime(e.target.value)}
+                        className="border border-gray-300 rounded-lg p-2 text-gray-700 bg-white shadow-sm"
+                    >
+                        {[...Array(60)].map((_, i) => (
+                            <option key={i + 1} value={i + 1}>
+                                {i + 1} dias
+                            </option>
+                        ))}
+                    </select>
+
+                    {/* 3️⃣ Filtro de Histórico */}
+                    <select
+                        value={historicoFilter}
+                        onChange={(e) => setHistoricoFilter(e.target.value)}
+                        className="border border-gray-300 rounded-lg p-2 text-gray-700 bg-white shadow-sm"
+                    >
+                        <option value="todas">Todas movimentações</option>
+                        <option value="90">Últimos 90 dias</option>
+                        <option value="60">Últimos 60 dias</option>
+                        <option value="30">Últimos 30 dias</option>
+                    </select>
                 </div>
             </div>
         </div>

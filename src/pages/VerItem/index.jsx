@@ -1,7 +1,7 @@
 import Navbar from "../../components/navbar";
 import ResponseAPI from "../../components/responseapi";
 import ConfirmModal from "../../components/confirmModal";
-import { Camera, Plus } from "lucide-react";
+import { Camera, Plus, Wand2 } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import api from "../../api/api";
 // import axios from "axios";
@@ -188,6 +188,25 @@ function ItensDetalhes() {
         }
     };
 
+    // put ai analysis
+    const [isIaAnalyzing, setIsIaAnalyzing] = useState(false);
+
+    const handleIaAnalysis = async () => {
+        try {
+            setIsIaAnalyzing(true);
+            await api.put(`/ia_analysis/${id}`);
+            window.location.href = `/dashboard/${id}`;
+            console.log(isIaAnalyzing)
+        } catch (error) {
+            console.error("Erro ao iniciar análise IA:", error);
+            setTitle("Erro!");
+            setResponseMessage("Erro ao gerar análise de IA.");
+            setResponseOpen(true);
+        } finally {
+            setIsIaAnalyzing(false);
+        }
+    };
+
 
     return (
         <>
@@ -214,14 +233,14 @@ function ItensDetalhes() {
                                 <div>
                                     <h3 className="text-sm font-semibold text-gray-500 uppercase">Custo médio</h3>
                                     <p className="text-lg text-gray-800">
-                                        {stock ? formatarPreco(stock.custo_medio) : "Carregando..."}
+                                        {stock ? formatarPreco(stock.custo_medio) : "-"}
                                     </p>
                                 </div>
 
                                 <div>
                                     <h3 className="text-sm font-semibold text-gray-500 uppercase">Quantidade</h3>
                                     <p className="text-lg text-gray-800">
-                                        {stock ? stock.quantidade_disponivel : "Carregando..."}
+                                        {stock ? stock.quantidade_disponivel : "-"}
                                     </p>
                                 </div>
 
@@ -253,7 +272,19 @@ function ItensDetalhes() {
                                 >
                                     Remover Produto
                                 </button>
+                                {/* botao estatistica ia */}
+                                <div className="mt-3 flex items-center justify-center w-full cursor-pointer">
+                                    <button
+                                        type="button"
+                                        onClick={handleIaAnalysis}
 
+
+                                        className="bg-purple-500 text-white border flex flex-row justify-center gap-2 border-white
+                   text-center font-semibold py-2 rounded-md transition hover:bg-purple-600 w-full cursor-pointer"
+                                    >
+                                        <Wand2 /> Ver estastísticas IA
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
