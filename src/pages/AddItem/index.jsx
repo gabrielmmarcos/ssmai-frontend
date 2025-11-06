@@ -92,7 +92,7 @@ function AddItem() {
 
             // Envia a imagem para o endpoint de extração
             const extractResponse = await api.post(
-                "/products/extract_text_from_document/fake",
+                "/products/extract_text_from_document/",
                 data,
                 { headers: { "Content-Type": "multipart/form-data" } }
             );

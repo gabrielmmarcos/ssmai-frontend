@@ -188,25 +188,30 @@ function ItensDetalhes() {
         }
     };
 
-    // put ai analysis
-    const [isIaAnalyzing, setIsIaAnalyzing] = useState(false);
+    //get estoque ideal
+    const [estoqueIdeal, setEstoqueIdeal] = useState(null);
 
-    const handleIaAnalysis = async () => {
+    const EstoqueIdeal = useCallback(async () => {
+        const token = localStorage.getItem("token");
         try {
-            setIsIaAnalyzing(true);
-            await api.put(`/ia_analysis/${id}`);
-            window.location.href = `/dashboard/${id}`;
-            console.log(isIaAnalyzing)
+            const res = await api.get(`/ai_analysis/${id}`, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            setEstoqueIdeal(res.data.estoque_ideal);
         } catch (error) {
-            console.error("Erro ao iniciar análise IA:", error);
-            setTitle("Erro!");
-            setResponseMessage("Erro ao gerar análise de IA.");
-            setResponseOpen(true);
-        } finally {
-            setIsIaAnalyzing(false);
+            console.error("Erro ao buscar estoque ideal:", error);
         }
-    };
+    }, [id]);
 
+    useEffect(() => {
+        EstoqueIdeal();
+    }, [EstoqueIdeal]);
+
+    //format int
+    const transfomaInt = (valor) => {
+        if (valor === null || valor === undefined) return "-";
+        return parseInt(valor)
+    }
 
     return (
         <>
@@ -246,7 +251,7 @@ function ItensDetalhes() {
 
                                 <div>
                                     <h3 className="text-sm font-semibold text-gray-500 uppercase">Estoque Ideal</h3>
-                                    <p className="text-lg text-gray-800"> - </p>
+                                    <p className="text-lg text-gray-800">  {estoqueIdeal ? transfomaInt(estoqueIdeal) : " - "} </p>
                                 </div>
 
                                 <div>
@@ -273,10 +278,30 @@ function ItensDetalhes() {
                                     Remover Produto
                                 </button>
                                 {/* botao estatistica ia */}
-                                <div className="mt-3 flex items-center justify-center w-full cursor-pointer">
+                                <div className=" flex items-center justify-center w-full cursor-pointer">
                                     <button
                                         type="button"
-                                        onClick={handleIaAnalysis}
+                                        onClick={async () => {
+                                            try {
+                                                // faz o PUT
+                                                setLoading(true);
+                                                setShowModal(true);
+                                                setTitle("Gerando Análises...");
+                                                setResponseMessage("O item está sendo processado, aguarde.");
+                                                await api.put("/ai_analysis/all");
+                                                console.log("Análises IA atualizadas com sucesso!");
+                                                setLoading(false);
+                                                setTitle("Sucesso");
+                                                setResponseMessage("CSV enviado com sucesso!");
+                                                navigate(`/dashboard/${id}`);
+
+                                            } catch (error) {
+                                                console.error("Erro ao atualizar IA:", error);
+                                                setLoading(false);
+                                                setTitle("Erro");
+                                                setResponseMessage("Erro ao enviar ao Gerar a análise!");
+                                            }
+                                        }}
 
 
                                         className="bg-purple-500 text-white border flex flex-row justify-center gap-2 border-white

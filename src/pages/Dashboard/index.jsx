@@ -26,11 +26,17 @@ function DashboardID() {
     const [leadTime, setLeadTime] = useState(7);
     const [historicoFilter, setHistoricoFilter] = useState("todas");
 
-    // 🔹 Buscar lista de produtos
+
+
+
+    // Buscar lista de produtos
     useEffect(() => {
         async function fetchProducts() {
+            const token = localStorage.getItem("token"); //token geral
             try {
-                const res = await api.get(`/products/all_by_user_enterpryse?offset=0&limit=10`);
+                const res = await api.get(`/products/all_by_user_enterpryse?offset=0&limit=100`, {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
                 setAllProducts(res.data.products || []);
             } catch (error) {
                 console.error("Erro ao buscar produtos:", error);
@@ -39,15 +45,22 @@ function DashboardID() {
         fetchProducts();
     }, []);
 
-    // 🔹 Buscar dados do produto e gráfico
+    //  Buscar dados do produto e gráfico
     useEffect(() => {
         async function fetchData() {
+            const token = localStorage.getItem("token"); //token geral
             try {
-                const statsRes = await api.get(`/ai_analysis/${id}?lead_time=${leadTime}`);
+                const statsRes = await api.get(`/ai_analysis/${id}?lead_time=${leadTime}`, {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
                 setStats(statsRes.data);
 
-                const graphRes = await api.get(`/ai_analysis/${id}/graph`);
+                const graphRes = await api.get(`/ai_analysis/${id}/graph`, {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
                 setGraphData(graphRes.data);
+
+
             } catch (error) {
                 console.error("Erro ao buscar dados do dashboard:", error);
             }
@@ -55,7 +68,7 @@ function DashboardID() {
         fetchData();
     }, [id, leadTime]);
 
-    // 🔹 Aplicar filtro no histórico
+    //  Aplicar filtro no histórico
     const filteredHistorico = (() => {
         if (historicoFilter === "todas") return graphData.historico;
         const dias = parseInt(historicoFilter, 10);
@@ -64,7 +77,7 @@ function DashboardID() {
         return graphData.historico.filter((d) => new Date(d.data) >= cutoff);
     })();
 
-    // 🔹 Preparar dados do gráfico
+    //  Preparar dados do gráfico
     const allLabels = [
         ...filteredHistorico.map((d) =>
             new Date(d.data).toLocaleDateString("pt-BR", { day: "2-digit", month: "short" })
@@ -181,14 +194,14 @@ function DashboardID() {
                     )}
                 </div>
 
-                {/* 🔘 Botões abaixo do dashboard */}
+
                 <div className="flex flex-wrap gap-4 mt-8 justify-center">
-                    {/* 1️⃣ Selecionar Produto */}
+                    {/* Selecionar Produto */}
                     <select
                         onChange={(e) => navigate(`/dashboard/${e.target.value}`)}
                         className="border border-gray-300 rounded-lg p-2 text-gray-700 bg-white shadow-sm"
                     >
-                        <option>Selecionar Produto</option>
+
                         {allProducts.map((p) => (
                             <option key={p.id} value={p.id}>
                                 {p.nome}
@@ -196,7 +209,7 @@ function DashboardID() {
                         ))}
                     </select>
 
-                    {/* 2️⃣ Selecionar Lead Time */}
+                    {/* Selecionar Lead Time */}
                     <select
                         value={leadTime}
                         onChange={(e) => setLeadTime(e.target.value)}
@@ -209,7 +222,7 @@ function DashboardID() {
                         ))}
                     </select>
 
-                    {/* 3️⃣ Filtro de Histórico */}
+                    {/* Filtro de Histórico */}
                     <select
                         value={historicoFilter}
                         onChange={(e) => setHistoricoFilter(e.target.value)}

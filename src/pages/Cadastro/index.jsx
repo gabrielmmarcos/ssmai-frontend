@@ -12,31 +12,33 @@ function Cadastro() {
     const [showModal, setShowModal] = useState(false);
     const [responseTitle, setResponseTitle] = useState("");
     const [responseMessage, setResponseMessage] = useState("");
+    const [senhaGerada, setSenhaGerada] = useState("");
 
     const handleCadastro = async (e) => {
         e.preventDefault();
 
         try {
-            const body = {
-                nome: nome,
-                ramo: ramo,
-                email: email,
-            };
-
+            const body = { nome, ramo, email };
             const response = await api.post("/enterpryse/", body);
-            const senhaGerada = response.data.user_admin.password;
+            const senha = response.data.user_admin.password;
 
+            setSenhaGerada(senha);
             setResponseTitle("Empresa cadastrada com sucesso!");
             setResponseMessage(
-                `A senha da sua empresa é: ${senhaGerada}.\n\nGuarde bem esta senha — ela não será mostrada novamente.`
+                `A senha da sua empresa é: ${senha}. Guarde bem esta senha — ela não será mostrada novamente.`
             );
             setShowModal(true);
         } catch (error) {
             console.error("Erro ao cadastrar empresa:", error);
             setResponseTitle("Erro");
             setResponseMessage("Não foi possível cadastrar a empresa. Tente novamente.");
+            setSenhaGerada("");
             setShowModal(true);
         }
+    };
+
+    const handleCopy = () => {
+        navigator.clipboard.writeText(senhaGerada);
     };
 
     return (
@@ -44,12 +46,10 @@ function Cadastro() {
             <div className="flex flex-1 min-h-screen bg-gray-50 overflow-x-hidden">
                 <div className="flex flex-col lg:flex-row-reverse w-full h-screen items-center justify-center bg-white">
 
-
-
                     {/* Formulário */}
                     <form
                         onSubmit={handleCadastro}
-                        className="flex flex-col w-full  max-w-[700px] p-10 gap-3"
+                        className="flex flex-col w-full max-w-[700px] p-10 gap-3"
                     >
                         <h1 className="text-2xl lg:text-5xl font-bold text-blue-500 mb-2">
                             Cadastrar Empresa
@@ -115,15 +115,47 @@ function Cadastro() {
                 </div>
             </div>
 
-            <ResponseAPI
-                open={showModal}
-                onClose={() => {
-                    setShowModal(false);
-                    navigate("/");
-                }}
-                title={responseTitle}
-                message={responseMessage}
-            />
+            {/* Modal de resposta */}
+            {showModal && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50">
+                    <div className="bg-white rounded-2xl shadow-xl p-6 w-80 text-center">
+                        <h2 className="text-lg font-semibold text-blue-600 mb-2">{responseTitle}</h2>
+                        <p className="text-gray-700 mb-4">
+                            {senhaGerada ? (
+                                <>
+                                    A senha da sua empresa é:{" "}
+                                    <strong className="text-blue-600">{senhaGerada}</strong>
+                                    <br />
+                                    <span className="text-gray-600 text-sm">
+                                        Guarde bem esta senha — ela não será mostrada novamente.
+                                    </span>
+                                </>
+                            ) : (
+                                responseMessage
+                            )}
+                        </p>
+
+                        {senhaGerada && (
+                            <button
+                                onClick={handleCopy}
+                                className="mb-3 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 cursor-pointer mr-2"
+                            >
+                                Copiar senha
+                            </button>
+                        )}
+
+                        <button
+                            onClick={() => {
+                                setShowModal(false);
+                                navigate("/");
+                            }}
+                            className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 cursor-pointer"
+                        >
+                            Fazer Login
+                        </button>
+                    </div>
+                </div>
+            )}
         </>
     );
 }

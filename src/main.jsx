@@ -7,7 +7,10 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Cadastro from "./pages/Cadastro"
 import Profile from "./pages/Profile"
+//id
 import Dashboards from "./pages/Dashboard";
+//dashboard
+import DashboardTela from "./pages/Dashboards";
 import Chatbot from "./pages/Chatbot";
 // produtos
 import Produtos from "./pages/Estoque"
@@ -40,6 +43,10 @@ const router = createBrowserRouter([
   {
     path: "/dashboard/:id",
     element: <Dashboards />,
+  },
+  {
+    path: "/dashboard",
+    element: <DashboardTela />,
   },
   {
     path: "/chatbot",
