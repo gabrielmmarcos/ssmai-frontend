@@ -33,7 +33,7 @@ jobs:
 
       - name: 📤 Deploy para o S3
         run: |
-          aws s3 sync dist/ s3://ssmaifrontend --delete --cache-control max-age=31536000,public
+          aws s3 sync dist/ s3://ssmai-front-bucket --delete --cache-control max-age=31536000,public
 
       - name: 🧾 Listar conteúdo do dist (debug)
         run: ls -R dist/

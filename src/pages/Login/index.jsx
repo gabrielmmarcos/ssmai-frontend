@@ -80,7 +80,7 @@ function Login() {
 
               <div>
                 <h3 className="text-sm font-semibold text-gray-500 uppercase">
-                  Senha que nao seja 12345678
+                  Senha
                 </h3>
                 <input
                   type="password"
