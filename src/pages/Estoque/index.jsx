@@ -211,37 +211,39 @@ function Produtos() {
                             </thead>
                             <tbody>
                                 {produtos.length > 0 ? (
-                                    produtos.map((item) => (
-                                        <tr
-                                            key={item.id}
-                                            className="border border-blue-200 hover:bg-blue-50 transition cursor-pointer"
-                                            onClick={() => navigate(`/veritem/${item.id}`)}
-                                        >
-                                            <td className="py-3 px-4 font-medium border border-blue-100">
-                                                {item.nome}
-                                            </td>
-                                            <td className="py-3 px-4  font-medium border border-blue-100  ">
-                                                {stocks[item.id]
-                                                    ? formatarPreco(stocks[item.id].custo_medio)
-                                                    : "Carregando..."}
-                                            </td>
-                                            <td className="py-3 px-4  font-medium border border-blue-100 ">
-                                                {stocks[item.id]
-                                                    ? stocks[item.id].quantidade_disponivel
-                                                    : "Carregando..."}
-                                            </td>
+                                    [...produtos]
+                                        .sort((a, b) => a.id - b.id)
+                                        .map((item) => (
+                                            <tr
+                                                key={item.id}
+                                                className="border border-blue-200 hover:bg-blue-50 transition cursor-pointer"
+                                                onClick={() => navigate(`/veritem/${item.id}`)}
+                                            >
+                                                <td className="py-3 px-4 font-medium border border-blue-100">
+                                                    {item.nome}
+                                                </td>
+                                                <td className="py-3 px-4  font-medium border border-blue-100  ">
+                                                    {stocks[item.id]
+                                                        ? formatarPreco(stocks[item.id].custo_medio)
+                                                        : "Carregando..."}
+                                                </td>
+                                                <td className="py-3 px-4  font-medium border border-blue-100 ">
+                                                    {stocks[item.id]
+                                                        ? stocks[item.id].quantidade_disponivel
+                                                        : "Carregando..."}
+                                                </td>
 
-                                            <td className="py-3 px-4  font-medium border border-blue-100">
-                                                {stockIdeal[item.id]
-                                                    ? transfomaInt(stockIdeal[item.id].estoque_ideal)
-                                                    : "-"}
-                                            </td>
-                                            <td className="py-3 px-4 font-medium border border-blue-100">
-                                                {item.categoria}
-                                            </td>
+                                                <td className="py-3 px-4  font-medium border border-blue-100">
+                                                    {stockIdeal[item.id]
+                                                        ? transfomaInt(stockIdeal[item.id].estoque_ideal)
+                                                        : "-"}
+                                                </td>
+                                                <td className="py-3 px-4 font-medium border border-blue-100">
+                                                    {item.categoria}
+                                                </td>
 
-                                        </tr>
-                                    ))
+                                            </tr>
+                                        ))
                                 ) : (
                                     <tr>
                                         <td

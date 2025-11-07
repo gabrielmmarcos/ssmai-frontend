@@ -43,6 +43,7 @@ function DashboardTela() {
                                     id={p.id}
                                     nome={p.nome}
                                     categoria={p.categoria}
+                                    img={p.image}
 
                                 />
                             ))

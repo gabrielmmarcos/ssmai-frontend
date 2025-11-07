@@ -1,19 +1,39 @@
 import React from "react";
 import { Camera } from "lucide-react";
 
-const ItemCard = ({ id, nome, categoria }) => {
+const ItemCard = ({ id, nome, categoria, img }) => {
     return (
-        <div className="bg-blue-50 rounded-xl flex flex-col items-center w-full h-80 shadow-sm">
-            <div className="h-full bg-blue-200 w-full rounded-xl flex justify-center items-center">
-                <Camera />
+        <div className=" rounded-xl flex flex-col items-center w-full h-80 shadow-sm">
+
+            {/* Área da imagem */}
+            <div
+                className={`h-1/2 w-full rounded-xl flex justify-center items-center p-3 transition ${img
+                    ? "border border-gray-300 bg-transparent"
+                    : "bg-blue-200"
+                    }`}
+            >
+                {img ? (
+                    <img
+                        src={img}
+                        className="object-contain w-full h-full rounded-lg"
+                    />
+                ) : (
+                    <Camera size={64} className="text-blue-600" />
+                )}
             </div>
-            <div className="w-full h-fit p-4  items-start ">
-                <h4 className="font-bold  text-xl uppercase">{nome}</h4>
-                <p><span className="font-medium">Categoria:</span> {categoria}</p>
+
+
+            <div className="bg-blue-50 w-full h-1/2 p-4 flex flex-col justify-between">
+                <div>
+                    <h4 className="font-bold text-xl uppercase">{nome}</h4>
+                    <p>
+                        <span className="font-medium">Categoria:</span> {categoria}
+                    </p>
+                </div>
 
                 <a href={`/dashboard/${id}`}>
                     <button
-                        className="border-1 border-blue-500 text-blue-500 w-full bg-white px-4 py-1 mt-3 rounded-lg hover:bg-blue-500 hover:text-white transition cursor-pointer"
+                        className="border border-blue-500 text-blue-500 w-full bg-white px-4 py-1 mt-3 rounded-lg hover:bg-blue-500 hover:text-white transition cursor-pointer"
                     >
                         Ver Análise
                     </button>

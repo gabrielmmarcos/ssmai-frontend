@@ -121,8 +121,6 @@ function AddItem() {
         }
     };
 
-
-
     // ativa camera
     const handleFileChange = (e) => {
         const file = e.target.files[0];
@@ -144,8 +142,6 @@ function AddItem() {
                         onSubmit={handleSubmit}
                         className="flex flex-col w-full lg:w-1/2 max-w-md p-10 gap-2"
                     >
-
-
                         <input
                             type="text"
                             name="nome"
@@ -155,7 +151,6 @@ function AddItem() {
                             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
                             required
                         />
-
                         <input
                             type="text"
                             name="categoria"
@@ -165,7 +160,6 @@ function AddItem() {
                             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
                             required
                         />
-
                         <button
                             type="submit"
                             className="bg-blue-500 text-white text-center font-semibold py-2 rounded-md transition hover:bg-blue-600 cursor-pointer"

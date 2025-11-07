@@ -1,7 +1,7 @@
 import React from "react";
 import { Camera } from "lucide-react";
 
-const CardHome = ({ id, nome, categoria, preco, quantidade, analise }) => {
+const CardHome = ({ id, nome, categoria, preco, quantidade, analise, img }) => {
     // passa pra float
     function passFloat(value) {
         const num = parseFloat(value);
@@ -20,11 +20,25 @@ const CardHome = ({ id, nome, categoria, preco, quantidade, analise }) => {
     const safeValue = (v) => (v === null || v === undefined ? "-" : v);
 
     return (
-        <div className="bg-white rounded-2xl shadow-md flex flex-col lg:flex-row overflow-hidden hover:shadow-lg transition-all duration-200">
+        <div className="bg-white rounded-2xl shadow-md flex flex-col lg:flex-row items-center overflow-hidden hover:shadow-lg transition-all duration-200  border border-gray-200">
             {/* Área da imagem */}
-            <div className="bg-blue-100 flex items-center justify-center lg:w-1/3 w-full p-6">
-                <Camera className="text-blue-500 w-16 h-16" />
+
+            <div
+                className={` ml-2 w-1/3 rounded-xl flex justify-center items-center p-5  ${img
+                    ? "border border-gray-300 bg-transparent h-[200px]"
+                    : "bg-blue-200 h-full"
+                    }`}
+            >
+                {img ? (
+                    <img
+                        src={img}
+                        className="object-contain w-full h-full rounded-lg"
+                    />
+                ) : (
+                    <Camera size={64} className="text-blue-600" />
+                )}
             </div>
+
 
             {/* Área de informações */}
             <div className="flex flex-col justify-between w-full lg:w-2/3 p-6">

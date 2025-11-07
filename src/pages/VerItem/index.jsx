@@ -213,6 +213,51 @@ function ItensDetalhes() {
         return parseInt(valor)
     }
 
+    //put img
+    const [showImageChoiceModal, setShowImageChoiceModal] = useState(false);
+    const [uploading, setUploading] = useState(false);
+    const handleFileChange = async (event) => {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        // Verifica o tipo do arquivo
+        const validTypes = [
+            "application/pdf",
+            "application/xml",
+            "image/jpeg",
+            "image/png",
+            "image/webp",
+        ];
+        if (!validTypes.includes(file.type)) {
+            alert("Formato inválido. Envie apenas PDF, XML, JPEG, PNG ou WEBP.");
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append("file", file);
+
+        try {
+            setUploading(true);
+            const token = localStorage.getItem("token");
+            await api.put(`/products/${id}/images`, formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            // Atualiza o produto após upload
+            const res = await api.get(`/products/all_by_user_enterpryse?offset=0&limit=100`);
+            const atualizado = res.data.products.find((p) => p.id === Number(id));
+            setProduto(atualizado);
+            setShowImageChoiceModal(false);
+        } catch (err) {
+            console.error("Erro ao enviar imagem:", err);
+            alert("Erro ao enviar imagem. Tente novamente.");
+        } finally {
+            setUploading(false);
+        }
+    };
     return (
         <>
             <div className="flex w-full">
@@ -223,10 +268,25 @@ function ItensDetalhes() {
                     {/*Seção do Produto*/}
                     <div className="flex flex-col lg:flex-row-reverse w-full lg:max-w-[1000px] justify-center items-center gap-8 pb-10 border-b border-gray-200">
                         {/* Imagem do produto */}
-                        <div className="flex bg-blue-200 rounded-lg w-full lg:w-96 h-44 lg:h-80 items-center justify-center p-5">
-                            <Camera size={64} className="text-blue-600" />
+                        <div className="flex flex-col items-center w-full lg:w-96">
+                            <div
+                                className={`flex rounded-lg w-full lg:w-96 h-44 lg:h-80 items-center justify-center p-5 cursor-pointer hover:opacity-90 transition ${produto?.image
+                                    ? "border border-gray-300 bg-transparent" // com img
+                                    : "bg-blue-200" // sim img
+                                    }`}
+                                onClick={() => setShowImageChoiceModal(true)}
+                            >
+                                {produto?.image ? (
+                                    <img
+                                        src={produto.image}
+                                        alt="Imagem do produto"
+                                        className="object-contain w-full h-full rounded-lg"
+                                    />
+                                ) : (
+                                    <Camera size={64} className="text-blue-600" />
+                                )}
+                            </div>
                         </div>
-
                         {/* Infos do produto */}
                         <div className="flex flex-col w-full lg:w-1/2 max-w-md p-0 gap-4">
                             <h1 className="text-3xl font-bold text-blue-500 mb-1">
@@ -564,7 +624,67 @@ function ItensDetalhes() {
                         : responseMessage
                 }
             />
+            {/* modal img */}
+            {showImageChoiceModal && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50">
+                    <div className="bg-white rounded-2xl shadow-lg p-6 w-80 text-center">
+                        <h2 className="text-lg font-semibold mb-4 text-gray-800">
+                            Como deseja adicionar?
+                        </h2>
 
+                        <div className="flex flex-col gap-3">
+                            {/* Câmera (mobile) */}
+                            <>
+                                <label
+                                    htmlFor="cameraInput"
+                                    className="lg:hidden cursor-pointer bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition"
+                                >
+                                    Tirar Foto
+                                </label>
+                                <input
+                                    type="file"
+                                    id="cameraInput"
+                                    accept="image/*"
+                                    capture="environment"
+                                    onChange={handleFileChange}
+                                    className="hidden"
+                                />
+                            </>
+
+                            {/* Galeria */}
+                            <label
+                                htmlFor="fileInput"
+                                className="cursor-pointer bg-gray-200 text-gray-700 py-2 rounded-md hover:bg-gray-300 transition"
+                            >
+                                Escolher da Galeria
+                            </label>
+                            <input
+                                type="file"
+                                id="fileInput"
+                                accept=".pdf,.xml,image/jpeg,image/png,image/webp"
+                                onChange={handleFileChange}
+                                className="hidden"
+                            />
+
+                            {/* Observação sobre formatos aceitos */}
+                            <p className="text-xs text-gray-500 mt-2">
+                                Tipos aceitos: <b>.pdf</b>, <b>.xml</b>, <b>.jpeg</b>, <b>.png</b>, <b>.webp</b>
+                            </p>
+
+                            <button
+                                onClick={() => setShowImageChoiceModal(false)}
+                                className="mt-3 text-red-500 hover:underline cursor-pointer"
+                            >
+                                Voltar
+                            </button>
+                        </div>
+
+                        {uploading && (
+                            <p className="mt-4 text-blue-500 font-semibold">Enviando imagem...</p>
+                        )}
+                    </div>
+                </div>
+            )}
 
 
         </>

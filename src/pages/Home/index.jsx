@@ -106,17 +106,21 @@ function Home() {
 
         {produtos.length > 0 ? (
           <div className="grid grid-cols-1  gap-6">
-            {produtos.map((p) => (
-              <CardHome
-                key={p.id}
-                id={p.id}
-                nome={p.nome}
-                categoria={p.categoria}
-                preco={stocks[p.id] ? formatarPreco(stocks[p.id].custo_medio) : "-"}
-                quantidade={stocks[p.id]?.quantidade_disponivel ?? "-"}
-                analise={analises[p.id]}
-              />
-            ))}
+            {produtos
+              .sort((a, b) => a.id - b.id)
+              .map((p) => (
+                <CardHome
+                  key={p.id}
+                  id={p.id}
+                  nome={p.nome}
+                  categoria={p.categoria}
+                  img={p.image}
+                  preco={stocks[p.id] ? formatarPreco(stocks[p.id].custo_medio) : "-"}
+                  quantidade={stocks[p.id]?.quantidade_disponivel ?? "-"}
+                  analise={analises[p.id]}
+
+                />
+              ))}
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center h-[60vh] text-center">
