@@ -10,10 +10,6 @@ function Chatbot() {
     const [loading, setLoading] = useState(false);
     const [mode, setMode] = useState("geral"); // 'geral' ou 'assistente'
 
-    // Modal de resposta
-    const [showModal, setShowModal] = useState(false);
-    const [responseTitle, setResponseTitle] = useState("");
-    const [responseMessage, setResponseMessage] = useState("");
 
     // Buscar histórico quando entra no modo "geral"
     useEffect(() => {
@@ -85,15 +81,13 @@ function Chatbot() {
 
                 } catch (error) {
                     console.error("Erro ao enviar mensagem:", error);
-                    setResponseTitle("Erro");
-                    setResponseMessage("Não foi possível enviar a mensagem. Tente novamente.");
-                    setShowModal(true);
+
                     botReply = "❌ Ocorreu um erro ao se conectar com o servidor.";
                 }
             } else {
                 // 🔹 Envia pro AWS Lambda
                 const lambdaResponse = await fetch(
-                    "https://b2zpny1o31.execute-api.us-east-2.amazonaws.com/default/bedrock-kb-lambda-ssmai",
+                    "https://lrkb9tvss6.execute-api.us-east-2.amazonaws.com/default/bedrock-kb-lambda-ssmai",
                     {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
@@ -199,13 +193,6 @@ function Chatbot() {
                 </div>
             </div>
 
-            {/* Modal de resposta */}
-            <ResponseAPI
-                open={showModal}
-                onClose={() => setShowModal(false)}
-                title={responseTitle}
-                message={responseMessage}
-            />
         </div>
     );
 }
