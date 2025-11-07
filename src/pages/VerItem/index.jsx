@@ -89,7 +89,7 @@ function ItensDetalhes() {
 
     // api get movimentaaoes
     const buscarMovimentacoes = useCallback(async () => {
-        const res = await api.get(`/stock/moviments/${id}?offset=0&limit=100`);
+        const res = await api.get(`/stock/moviments/${id}?offset=0&limit=10`);
         setMovimentacoes(res.data.products);
     }, [id]);
 
@@ -288,7 +288,7 @@ function ItensDetalhes() {
                                                 setShowModal(true);
                                                 setTitle("Gerando Análises...");
                                                 setResponseMessage("O item está sendo processado, aguarde.");
-                                                await api.put("/ai_analysis/all");
+                                                await api.put(`/ai_analysis/${id}`);
                                                 console.log("Análises IA atualizadas com sucesso!");
                                                 setLoading(false);
                                                 setTitle("Sucesso");
