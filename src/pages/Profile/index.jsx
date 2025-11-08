@@ -4,6 +4,7 @@ import {
     User,
     PackageSearch,
     LayoutDashboard,
+    Bot,
     LogOut,
     ChevronRight,
     Camera,
@@ -14,7 +15,8 @@ function Profile() {
     const menuItems = [
         { icon: <User size={18} color="#f97316" />, label: "Home", href: "/home" },
         { icon: <PackageSearch size={18} color="#2563eb" />, label: "Estoque", href: "/estoque" },
-        { icon: <LayoutDashboard size={18} color="#10b981" />, label: "Dashboard", href: "/dashboard" },
+        { icon: <LayoutDashboard size={18} color="#9333ea" />, label: "Dashboard", href: "/dashboard" },
+        { icon: <Bot size={18} color="#10b981" />, label: "Chat-Bot", href: "/chatbot" },
         { icon: <LogOut size={18} color="#ef4444" />, label: "Sair", href: "/" },
     ];
 
@@ -70,8 +72,8 @@ function Profile() {
                                         </div>
                                         <span
                                             className={`font-medium ${item.label === "Sair"
-                                                    ? "text-red-500"
-                                                    : "text-gray-700"
+                                                ? "text-red-500"
+                                                : "text-gray-700"
                                                 }`}
                                         >
                                             {item.label}

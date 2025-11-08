@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Send } from "lucide-react";
+import ReactMarkdown from "react-markdown";
 import api from "../../api/api";
 import Navbar from "../../components/navbar";
 
@@ -161,7 +162,7 @@ function Chatbot() {
                 </div>
 
                 {/* MENSAGENS */}
-                <div className="flex flex-col gap-4 flex-1 overflow-y-auto p-4 bg-gray-50 rounded-2xl mx-0 lg:mx-6 mb-20">
+                <div className="mt-4 lg:mt-20 flex flex-col gap-4 flex-1 overflow-y-auto p-4 bg-gray-50 rounded-2xl mx-0 lg:mx-6 mb-20">
                     {messages.map((msg, i) => (
                         <div
                             key={i}
@@ -173,7 +174,14 @@ function Chatbot() {
                                     : "bg-gray-200 text-gray-800 rounded-bl-none"
                                     }`}
                             >
-                                <div style={{ whiteSpace: "pre-line" }}>{msg.text}</div>
+                                {/* --- dentro do map() onde renderiza msg --- */}
+                                <div className="prose prose-sm max-w-none" style={{ whiteSpace: "pre-line" }}>
+                                    {(() => {
+                                        // converte quebras simples em quebra forçada do Markdown (dois espaços + \n)
+                                        const formatted = String(msg.text || "").replace(/\r\n/g, "\n").replace(/\n/g, "  \n");
+                                        return <ReactMarkdown>{formatted}</ReactMarkdown>;
+                                    })()}
+                                </div>
                             </div>
                         </div>
                     ))}
