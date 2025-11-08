@@ -167,7 +167,7 @@ function Produtos() {
                                         setLoading(true);
                                         setShowModal(true);
                                         setTitle("Gerando Análises...");
-                                        setResponseMessage("O arquivo está sendo processado, aguarde.");
+                                        setResponseMessage("Gerando Análise do estoque completo, aguarde.");
                                         await api.put("/ai_analysis/all");
                                         console.log("Análises IA atualizadas com sucesso!");
                                         setLoading(false);

@@ -343,7 +343,7 @@ function ItensDetalhes() {
                                                 console.log("Análises IA atualizadas com sucesso!");
                                                 setLoading(false);
                                                 setTitle("Sucesso");
-                                                setResponseMessage("CSV enviado com sucesso!");
+                                                setResponseMessage("IA análises atualizadas com sucesso!");
                                                 navigate(`/dashboard/${id}`);
 
                                             } catch (error) {
