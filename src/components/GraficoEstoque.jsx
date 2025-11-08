@@ -119,7 +119,7 @@ export default function GraficoEstoque({ id, leadTime }) {
             y: {
                 title: {
                     display: true,
-                    text: "Quantidade Estoque",
+                    text: "Quantidade Saídas",
                     color: "#374151",
                     font: {
                         size: 14,
@@ -156,11 +156,11 @@ export default function GraficoEstoque({ id, leadTime }) {
                 <div className="flex  gap-4 justify-center items-center mt-6 text-gray-700">
                     <div className="flex items-center gap-2">
                         <span className="w-4 h-4 bg-blue-500 rounded-sm"></span>
-                        <span>Histórico do Estoque</span>
+                        <span>Histórico do Saídas</span>
                     </div>
                     <div className="flex items-center gap-2">
                         <span className="w-4 h-4 bg-purple-500 rounded-sm"></span>
-                        <span>Previsão de Estoque</span>
+                        <span>Previsão de Saídas</span>
                     </div>
                 </div>
             </div>

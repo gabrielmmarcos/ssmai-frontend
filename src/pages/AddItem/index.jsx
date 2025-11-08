@@ -82,7 +82,7 @@ function AddItem() {
         if (!fileimg) return;
 
         const data = new FormData();
-        data.append("image", fileimg);
+        data.append("document", fileimg);
 
         try {
             setLoading(true);

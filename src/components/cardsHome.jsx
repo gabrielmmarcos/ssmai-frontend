@@ -24,9 +24,9 @@ const CardHome = ({ id, nome, categoria, preco, quantidade, analise, img }) => {
             {/* Área da imagem */}
 
             <div
-                className={` ml-2 w-1/3 rounded-xl flex justify-center items-center p-5  ${img
-                    ? "border border-gray-300 bg-transparent h-[200px]"
-                    : "bg-blue-200 h-full"
+                className={` ml-0 lg:ml-2 w-full lg:w-1/3 rounded-xl flex justify-center items-center p-5  ${img
+                    ? "border border-gray-300 bg-transparent  lg:h-[200px]"
+                    : "bg-blue-200 h-[200px] lg:h-full"
                     }`}
             >
                 {img ? (

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Plus, Wand2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import ResponseAPI from "../../components/responseapi";
-import ItemCard from "../../components/itemCard";
+import ItemCardEstoque from "../../components/itemCardEstoque";
 import api from "../../api/api";
 
 function Produtos() {
@@ -153,8 +153,8 @@ function Produtos() {
                 <Navbar />
 
                 <div className="flex flex-col flex-1 py-28 px-10 lg:py-10 min-h-screen bg-white overflow-x-hidden ml-0 lg:ml-52">
-                    <div className="flex justify-between items-start">
-                        <h1 className="text-2xl lg:text-5xl text-center lg:text-left justify-center items-center flex font-bold text-gray-800 mb-8">
+                    <div className="flex lg:flex-row flex-col justify-center lg:justify-between items-center lg:items-start mb-4">
+                        <h1 className="text-3xl lg:text-5xl text-center lg:text-left justify-center items-center flex font-bold text-gray-800 mb-8">
                             Estoque
                         </h1>
                         {/* Botão estatisticas */}
@@ -260,20 +260,23 @@ function Produtos() {
 
                     <div className="grid lg:hidden grid-cols-1 w-full gap-4">
                         {produtos.length > 0 ? (
-                            produtos.map((p) => (
-                                <ItemCard
-                                    key={p.id}
-                                    id={p.id}
-                                    nome={p.nome}
-                                    categoria={p.categoria}
-                                    preco={stocks[p.id]
-                                        ? formatarPreco(stocks[p.id].custo_medio)
-                                        : ""}
-                                    quantidade={stocks[p.id]
-                                        ? stocks[p.id].quantidade_disponivel
-                                        : ""}
-                                />
-                            ))
+                            [...produtos]
+                                .sort((a, b) => a.id - b.id)
+                                .map((p) => (
+                                    <ItemCardEstoque
+                                        key={p.id}
+                                        id={p.id}
+                                        nome={p.nome}
+                                        categoria={p.categoria}
+                                        preco={stocks[p.id]
+                                            ? formatarPreco(stocks[p.id].custo_medio)
+                                            : ""}
+                                        quantidade={stocks[p.id]
+                                            ? stocks[p.id].quantidade_disponivel
+                                            : ""}
+                                        img={p.image}
+                                    />
+                                ))
                         ) : (
                             <p className="text-gray-500 w-full flex justify-center">Nenhum produto encontrado.</p>
                         )}

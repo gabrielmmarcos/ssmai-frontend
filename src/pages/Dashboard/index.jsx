@@ -203,15 +203,15 @@ function DashboardID() {
         <div className="flex w-full">
             <Navbar />
             <div className="flex flex-col flex-1 py-28 px-5 lg:py-10 min-h-screen bg-white overflow-x-hidden ml-0 lg:ml-52">
-                <div className="flex flex-col w-fit lg:w-full lg:px-10 lg:flex-row justify-center gap-10 lg:gap-0  lg:justify-between items-center">
-                    <h1 className="text-2xl lg:text-5xl text-center w-fit lg:w-full   flex font-bold text-gray-800 ">
+                <div className="flex flex-col w-full lg:px-10 lg:flex-row justify-center gap-10 lg:gap-0  lg:justify-between items-center">
+                    <h1 className="text-3xl lg:text-5xl text-center w-fit lg:w-full   flex font-bold text-gray-800 ">
                         {name}
                     </h1>
                     <div className="flex flex-col lg:flex-row gap-6 justify-start lg:justify-center items-start lg:items-center mb-6">
 
 
                         {/* Selecionar Produto */}
-                        <div className="flex flex-col items-start w-[250px]">
+                        <div className="flex flex-col items-center lg:items-start w-[250px]">
                             <h3 className="text-gray-700 font-semibold mb-1">Selecionar produto</h3>
                             <button
                                 type="button"
@@ -249,7 +249,7 @@ function DashboardID() {
 
                 </div>
                 {/* Gráfico */}
-                <div className="bg-white rounded-2xl px-8  py-6 w-full shadow-sm">
+                <div className="hidden lg:block bg-white rounded-2xl px-8  py-6 w-full shadow-sm">
                     <div className="mt-2">
                         {/* Gráfico */}
                         <GraficoEstoque id={id} leadTime={leadTime} />
@@ -260,13 +260,13 @@ function DashboardID() {
 
 
                 {/* Estatísticas IA */}
-                <div className="w-full flex justify-between px-10 mt-20 items-center">
-                    <h1 className="text-2xl  text-center w-fit lg:w-full   flex font-bold text-gray-800 ">
+                <div className="w-full flex flex-col lg:flex-row gap-4 lg:gap-0 justify-between px-10 mt-20 items-center">
+                    <h1 className="text-2xl  text-center w-fit lg:w-full  items-center flex font-bold text-gray-800 ">
                         Dados do Item
                     </h1>
                     {/* Selecionar Lead Time */}
-                    <div className="flex flex-col items-start w-[300px]">
-                        <h3 className="text-gray-700 font-semibold mb-1 w-full">Período/Reposição</h3>
+                    <div className="flex flex-col items-start w-[250px] lg:w-[300px]">
+                        <h3 className="text-gray-700 font-semibold mb-1 w-full text-center lg:text-start">Período/Reposição</h3>
                         <select
                             value={leadTime}
                             onChange={(e) => setLeadTime(e.target.value)}

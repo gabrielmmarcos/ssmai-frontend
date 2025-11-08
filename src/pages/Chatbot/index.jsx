@@ -132,13 +132,13 @@ function Chatbot() {
             <Navbar />
 
             {/* Conteúdo principal do Chat */}
-            <div className=" relative flex flex-col flex-1 w-full py-28 px-5 lg:py-0 min-h-screen bg-white overflow-x-hidden ml-0 lg:ml-52">
+            <div className=" relative flex flex-col flex-1 w-full py-28 px-0 lg:px-5 lg:py-0 min-h-screen bg-white overflow-x-hidden ml-0 lg:ml-52">
                 {/* HEADER */}
-                <div className="fixed top-0 flex justify-between items-center mb-6 w-[1300px] px-6 py-4 bg-white">
+                <div className="relative lg:fixed top-0 gap-4 lg:gap-0 flex flex-col lg:flex-row justify-between items-center mb-6 w-full lg:w-[1300px] px-6 py-4 bg-white">
                     <h1 className="text-2xl font-bold text-black uppercase">Chat-Bot</h1>
 
                     {/* BOTÕES DE MODO */}
-                    <div className="flex gap-2">
+                    <div className="flex gap-2 flex-col lg:flex-row">
                         <button
                             onClick={() => setMode("geral")}
                             className={`px-4 py-2 rounded-full text-sm font-semibold border transition-all cursor-pointer  ${mode === "geral"
@@ -146,7 +146,7 @@ function Chatbot() {
                                 : "bg-white border-gray-300 text-gray-600 hover:bg-gray-100"
                                 }`}
                         >
-                            Chat Geral
+                            Estoque Inteligente
                         </button>
                         <button
                             onClick={() => setMode("assistente")}
@@ -161,7 +161,7 @@ function Chatbot() {
                 </div>
 
                 {/* MENSAGENS */}
-                <div className="flex flex-col gap-4 flex-1 overflow-y-auto p-4 bg-gray-50 rounded-2xl mx-6 mb-20">
+                <div className="flex flex-col gap-4 flex-1 overflow-y-auto p-4 bg-gray-50 rounded-2xl mx-0 lg:mx-6 mb-20">
                     {messages.map((msg, i) => (
                         <div
                             key={i}
@@ -184,14 +184,14 @@ function Chatbot() {
                 </div>
 
                 {/* INPUT */}
-                <div className="flex items-center gap-2 bg-white p-3  fixed bottom-0 left-0 right-0 lg:left-52 px-20">
+                <div className="flex items-center gap-2 bg-white p-3 w-full lg:w-[1300px] fixed bottom-0 left-0 right-0 lg:left-52 px-2 lg:px-20">
                     <input
                         type="text"
                         placeholder="Digite sua mensagem..."
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
                         onKeyDown={(e) => e.key === "Enter" && handleSend()}
-                        className="flex-1 border rounded-full px-4 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="flex-1 border w-full rounded-full px-4 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                     <button
                         onClick={handleSend}

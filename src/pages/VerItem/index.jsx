@@ -280,7 +280,7 @@ function ItensDetalhes() {
                         </div>
                         {/* Infos do produto */}
                         <div className="flex flex-col w-full lg:w-1/2 max-w-md p-0 gap-4">
-                            <h1 className="text-3xl font-bold text-blue-500 mb-1">
+                            <h1 className="text-3xl font-bold text-blue-500 mb-1 ">
                                 {produto ? produto.nome : "Carregando..."}
                             </h1>
 
@@ -308,7 +308,7 @@ function ItensDetalhes() {
                                 <div>
                                     <h3 className="text-sm font-semibold text-gray-500 uppercase">Categoria</h3>
                                     <p className="text-lg text-gray-800">
-                                        {produto ? produto.categoria : "Carregando..."}
+                                        {produto ? produto.categoria : "-"}
                                     </p>
                                 </div>
                             </div>
@@ -356,7 +356,7 @@ function ItensDetalhes() {
 
 
                                         className="bg-purple-500 text-white border flex flex-row justify-center gap-2 border-white
-                   text-center font-semibold py-2 rounded-md transition hover:bg-purple-600 w-full cursor-pointer"
+                   text-center font-semibold py-2 rounded-md transition w-full cursor-pointer"
                                     >
                                         <Wand2 /> Ver estastísticas IA
                                     </button>
@@ -367,7 +367,7 @@ function ItensDetalhes() {
 
                     {/*Seção da Tabela Moviementacoes*/}
                     <div className="w-full flex flex-col items-center mt-8">
-                        <h2 className="text-3xl font-bold text-blue-600 mb-6">
+                        <h2 className="text-3xl font-bold text-blue-600 mb-6 text-center lg:text-start">
                             Histórico de Movimentações
                         </h2>
 

@@ -27,26 +27,55 @@ function Home() {
   useEffect(() => {
     async function carregarItens() {
       try {
-        // 1️⃣ Verifica se o usuário já possui produtos
+        // 1Buscar todos os produtos
         const produtosRes = await api.get("/products/all_by_user_enterpryse?offset=0&limit=20");
         const produtosData = produtosRes.data.products || [];
         setHasProducts(produtosData.length > 0);
 
-        // 2️⃣ Se tiver produtos, busca os de risco
-        if (produtosData.length > 0) {
-          const token = localStorage.getItem("token");
-          const worstRes = await api.get("/ai_analysis/worst_stocks/", {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-          setWorstStocks(worstRes.data || []);
-        }
+        // Buscar apenas os produtos de risco
+        const token = localStorage.getItem("token");
+        const worstRes = await api.get("/ai_analysis/worst_stocks/", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const worstData = worstRes.data || [];
+
+        //  Montar dados completos apenas dos produtos em risco
+        const itemsCompletos = await Promise.all(
+          worstData.map(async (worstItem) => {
+            const idProduto = worstItem.stock.id_produtos;
+            const produto = produtosData.find((p) => p.id === idProduto);
+
+            // Se não tiver no /products, ignora
+            if (!produto) return null;
+
+            // Buscar estoque
+            const stockRes = await api.get(`/stock/${idProduto}`);
+            const stockData = stockRes.data || {};
+
+            // 5Buscar análise individual
+            const analysisRes = await api.get(`/ai_analysis/${idProduto}`);
+            const analysisData = analysisRes.data || {};
+
+            return {
+              id: idProduto,
+              nome: produto.nome,
+              categoria: produto.categoria,
+              image: produto.image,
+              custo: stockData.custo_medio,
+              quantidade: stockData.quantidade_disponivel,
+              analise: analysisData,
+            };
+          })
+        );
+
+        // 6️⃣ Filtra nulos (caso algum produto não tenha sido encontrado)
+        setWorstStocks(itemsCompletos.filter(Boolean));
       } catch (error) {
         console.error("Erro ao carregar itens de risco:", error);
       } finally {
         setLoading(false);
       }
+
     }
 
     carregarItens();
@@ -105,16 +134,17 @@ function Home() {
             <h2 className="text-lg font-semibold text-gray-800">Itens de Risco</h2>
             {worstStocks.map((item) => (
               <CardHome
-                key={item.stock.id}
-                id={item.stock.id}
-                nome={`Produto ${item.stock.id_produtos}`}
-                categoria="Risco de Estoque"
-                img={item.stock.image || null}
-                preco={formatarPreco(item.stock.custo_medio)}
-                quantidade={item.stock.quantidade_disponivel}
-                analise={item.indicators}
+                key={item.id}
+                id={item.id}
+                nome={item.nome}
+                categoria={item.categoria}
+                img={item.image}
+                preco={formatarPreco(item.custo)}
+                quantidade={item.quantidade}
+                analise={item.analise}
               />
             ))}
+
           </div>
         )}
       </div>
