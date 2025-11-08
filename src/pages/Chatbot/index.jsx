@@ -162,7 +162,7 @@ function Chatbot() {
                 </div>
 
                 {/* MENSAGENS */}
-                <div className="mt-4 lg:mt-20 flex flex-col gap-4 flex-1 overflow-y-auto p-4 bg-gray-50 rounded-2xl mx-0 lg:mx-6 mb-20">
+                <div className="mt-4 lg:mt-20 flex flex-col gap-4 flex-1 overflow-y-auto p-4 bg-white rounded-2xl mx-0 lg:mx-6 mb-20">
                     {messages.map((msg, i) => (
                         <div
                             key={i}
