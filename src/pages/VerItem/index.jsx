@@ -89,7 +89,7 @@ function ItensDetalhes() {
 
     // api get movimentaaoes
     const buscarMovimentacoes = useCallback(async () => {
-        const res = await api.get(`/stock/moviments/${id}?offset=0&limit=10`);
+        const res = await api.get(`/stock/moviments/${id}?offset=0&limit=1000`);
         setMovimentacoes(res.data.products);
     }, [id]);
 
@@ -220,26 +220,15 @@ function ItensDetalhes() {
         const file = event.target.files[0];
         if (!file) return;
 
-        // Verifica o tipo do arquivo
-        const validTypes = [
-            "application/pdf",
-            "application/xml",
-            "image/jpeg",
-            "image/png",
-            "image/webp",
-        ];
-        if (!validTypes.includes(file.type)) {
-            alert("Formato inválido. Envie apenas PDF, XML, JPEG, PNG ou WEBP.");
-            return;
-        }
-
         const formData = new FormData();
-        formData.append("file", file);
+        formData.append("image", file);
 
         try {
             setUploading(true);
             const token = localStorage.getItem("token");
-            await api.put(`/products/${id}/images`, formData, {
+
+            // Faz PUT com FormData e token
+            await api.put(`/products/${id}/image`, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                     Authorization: `Bearer ${token}`,
@@ -247,7 +236,7 @@ function ItensDetalhes() {
             });
 
             // Atualiza o produto após upload
-            const res = await api.get(`/products/all_by_user_enterpryse?offset=0&limit=100`);
+            const res = await api.get(`/products/all_by_user_enterpryse?offset=0&limit=1000`);
             const atualizado = res.data.products.find((p) => p.id === Number(id));
             setProduto(atualizado);
             setShowImageChoiceModal(false);
@@ -258,6 +247,8 @@ function ItensDetalhes() {
             setUploading(false);
         }
     };
+
+
     return (
         <>
             <div className="flex w-full">

@@ -82,7 +82,7 @@ function AddItem() {
         if (!fileimg) return;
 
         const data = new FormData();
-        data.append("document", fileimg);
+        data.append("image", fileimg);
 
         try {
             setLoading(true);
@@ -308,7 +308,10 @@ function AddItem() {
                                 onChange={handleFileChange}
                                 className="hidden"
                             />
-
+                            {/* Observação sobre formatos aceitos */}
+                            <p className="text-xs text-gray-500 mt-2">
+                                Tipos aceitos: <b>.pdf</b>, <b>.xml</b>, <b>.jpeg</b>, <b>.png</b>, <b>.webp</b>
+                            </p>
                             <button
                                 onClick={() => setShowImageChoiceModal(false)}
                                 className="mt-2 text-red-500 hover:underline cursor-pointer"

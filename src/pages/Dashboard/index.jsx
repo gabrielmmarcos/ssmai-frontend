@@ -266,7 +266,7 @@ function DashboardID() {
                     </h1>
                     {/* Selecionar Lead Time */}
                     <div className="flex flex-col items-start w-[300px]">
-                        <h3 className="text-gray-700 font-semibold mb-1 w-full">Definir Lead Time</h3>
+                        <h3 className="text-gray-700 font-semibold mb-1 w-full">Período/Reposição</h3>
                         <select
                             value={leadTime}
                             onChange={(e) => setLeadTime(e.target.value)}
