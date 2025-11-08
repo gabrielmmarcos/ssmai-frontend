@@ -119,7 +119,7 @@ export default function GraficoEstoque({ id, leadTime }) {
             y: {
                 title: {
                     display: true,
-                    text: "Quantidade",
+                    text: "Quantidade Estoque",
                     color: "#374151",
                     font: {
                         size: 14,

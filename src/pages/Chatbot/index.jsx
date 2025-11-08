@@ -54,7 +54,7 @@ function Chatbot() {
         }
     };
 
-    // 🔹 Envia mensagem
+    // Envia mensagem
     const handleSend = async () => {
         const token = localStorage.getItem("token");
         if (input.trim() === "") return;
@@ -79,7 +79,7 @@ function Chatbot() {
                     botReply =
                         response.data?.response ||
                         response.data?.message ||
-                        "Desculpe, não consegui entender. 😅";
+                        "Desculpe, não consegui entender. 😅, Tente novamente";
 
                     console.log("Resposta do kae:", botReply);
                 } catch (error) {
@@ -103,15 +103,23 @@ function Chatbot() {
                     botReply =
                         data?.body?.answer ||
                         data?.answer ||
-                        "Desculpe, o assistente não conseguiu responder agora. 😅";
+                        "Desculpe, o assistente não conseguiu responder agora. 😅, Tente novamente";
 
                     console.log("Resposta chat do viado do joao:", botReply);
                 } catch (error) {
                     console.error("Erro no chat assistente:", error);
-                    botReply = "❌ Erro ao conectar com o assistente AWS.";
+                    botReply = "Erro ao conectar com o assistente.";
                 }
             }
-
+            // const parts = botReply.split("\n").filter((p) => p.trim() !== "");
+            // const groupedParts = [];
+            // for (let i = 0; i < parts.length; i += 5) {
+            //     groupedParts.push(parts.slice(i, i + 4).join("\n"));
+            // }
+            // setMessages((prev) => [
+            //     ...prev,
+            //     ...parts.map((part) => ({ from: "bot", text: part })),
+            // ]);
             setMessages((prev) => [...prev, { from: "bot", text: botReply }]);
         } finally {
             setLoading(false);
@@ -165,7 +173,7 @@ function Chatbot() {
                                     : "bg-gray-200 text-gray-800 rounded-bl-none"
                                     }`}
                             >
-                                {msg.text}
+                                <div style={{ whiteSpace: "pre-line" }}>{msg.text}</div>
                             </div>
                         </div>
                     ))}
